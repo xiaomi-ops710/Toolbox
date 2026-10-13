@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>マルチツール</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ツール">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#6a4fd8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=block">
+<script>
+/* 設定とテーマ（描画前に適用） */
+var S={};try{S=JSON.parse(localStorage.getItem('mt-set')||'{}')}catch(e){}
+S=Object.assign({h:262,mode:'auto',fs:1,h24:true,rm:false},S);
+function sv(){try{localStorage.setItem('mt-set',JSON.stringify(S))}catch(e){}}
+function theme(){var d=S.mode=='dark'||(S.mode=='auto'&&matchMedia('(prefers-color-scheme:dark)').matches),t=(S.h+50)%360,
+c=function(s,l,x){return'hsl('+(x==null?S.h:x)+','+s+'%,'+l+'%)'},
+o=d?{p:c(90,80),op:c(65,20),pc:c(45,32),opc:c(95,91),sc:c(20,29),osc:c(40,90),tc:c(30,29,t),otc:c(75,91,t),bg:c(18,8),sf:c(14,13),sf2:c(12,18),on:c(15,90),ov:c(10,75),ol:c(8,32)}
+:{p:c(55,42),op:'#fff',pc:c(90,92),opc:c(85,16),sc:c(35,89),osc:c(40,14),tc:c(75,90,t),otc:c(70,16,t),bg:c(100,98),sf:c(40,95),sf2:c(30,91),on:c(15,11),ov:c(10,30),ol:c(12,78)},
+r=document.documentElement;for(var k in o)r.style.setProperty('--'+k,o[k]);r.style.colorScheme=d?'dark':'light';
+var m=document.querySelector('meta[name=theme-color]');m&&m.setAttribute('content',o.bg)}
+theme();matchMedia('(prefers-color-scheme:dark)').addEventListener('change',theme);
+</script>
+<style>
+:root{--p:#6a4fd8;--op:#fff;--pc:#e6deff;--opc:#22005d;--sc:#e8def8;--osc:#1d192b;--tc:#ffd8e4;--otc:#31111d;--bg:#fef7ff;--sf:#f3edf7;--sf2:#ece6f0;--on:#1d1b20;--ov:#49454f;--ol:#cac4d0;
+--sans:ui-rounded,"SF Pro Rounded",-apple-system,"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;--sp:cubic-bezier(.34,1.56,.64,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;margin:0;overscroll-behavior:none}
+body{font-family:var(--sans);background:var(--bg);color:var(--on);display:flex;height:100dvh;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+.rm *{animation:none!important;transition:none!important}
+[hidden]{display:none!important}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 1,'wght' 500;user-select:none;-webkit-user-select:none}
+html:not(.fl) .ms{visibility:hidden}
+/* ナビゲーションレール */
+nav{width:96px;flex:none;padding:12px 10px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;background:var(--sf);scrollbar-width:none;transition:width .4s cubic-bezier(.2,0,0,1);z-index:20}
+nav::-webkit-scrollbar{display:none}nav.open{width:304px}
+#hamb{all:unset;cursor:pointer;width:56px;height:48px;display:grid;place-items:center;border-radius:24px;align-self:center;flex:none}
+#hamb:active{background:var(--sf2)}nav.open #hamb{align-self:flex-start;margin-left:4px}
+#fab{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;height:56px;min-width:56px;border-radius:18px;background:var(--pc);color:var(--opc);font-weight:700;font-size:16px;align-self:center;margin:6px 0 14px;transition:all .35s var(--sp);flex:none}
+#fab .lb{display:none}nav.open #fab{align-self:flex-start;padding:0 24px;margin-left:4px}nav.open #fab .lb{display:inline}
+#fab:active{transform:scale(.92);border-radius:12px}
+#cats{display:flex;flex-direction:column;gap:6px}
+.it{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--ov);padding:2px 0;flex:none}
+.ic{width:56px;height:32px;border-radius:16px;display:grid;place-items:center;position:relative;transition:all .35s var(--sp)}
+.it.on{color:var(--on)}.it.on .ic{background:var(--sc);color:var(--osc);width:64px}.it:active .ic{transform:scale(.88)}
+nav.open .it{flex-direction:row;gap:14px;height:56px;border-radius:28px;padding:0 18px;font-size:16px}
+nav.open .it .ic{width:26px;height:26px;background:none!important}nav.open .it.on{background:var(--sc)}nav.open .it:active{background:var(--sf2)}
+.bd{position:absolute;top:-3px;right:6px;min-width:16px;height:16px;border-radius:8px;background:#b3261e;color:#fff;font-size:11px;font-style:normal;font-weight:700;display:grid;place-items:center;padding:0 4px;line-height:1}
+.bd.dot{min-width:8px;width:8px;height:8px;padding:0;top:2px;right:12px}.bd:empty:not(.dot){display:none}nav.open .bd{right:-8px;top:-6px}nav.open .bd.dot{right:-2px;top:-2px}
+#set{display:none;padding:18px 6px 6px;border-top:1px solid var(--ol);margin-top:14px}nav.open #set{display:block;animation:in .4s var(--sp)}
+#set h3{margin:0 0 14px 12px;font-size:14px;color:var(--ov)}
+.sg{margin:0 6px 18px}.sg>b{display:block;font-size:13px;color:var(--ov);margin-bottom:8px}
+.sg.r2{display:flex;justify-content:space-between;align-items:center}.sg.r2>b{margin:0;font-size:15px;color:var(--on)}
+.seg{display:flex;gap:6px}.seg button{all:unset;cursor:pointer;flex:1;text-align:center;padding:11px 0;border-radius:18px;background:var(--sf2);font-size:14px;font-weight:600;transition:all .3s var(--sp)}.seg button.on{background:var(--p);color:var(--op)}.seg button:active{transform:scale(.92)}
+.sw8{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.sw8 button{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;border:3px solid transparent;box-shadow:inset 0 0 0 2px var(--sf);transition:all .3s var(--sp)}.sw8 button.on{border-color:var(--on);transform:scale(1.12)}
+input[type=range]{width:100%;accent-color:var(--p);min-height:32px;padding:0;background:none}
+.swt{all:unset;width:52px;height:32px;border-radius:16px;background:var(--sf2);border:2px solid var(--ol);position:relative;cursor:pointer;flex:none;transition:all .3s}
+.swt:after{content:"";position:absolute;left:4px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--ov);transition:all .3s var(--sp)}
+.swt.on{background:var(--p);border-color:var(--p)}.swt.on:after{left:24px;top:2px;width:24px;height:24px;background:var(--op)}
+#scrim{display:none;position:fixed;inset:0;background:#0006;z-index:19}
+/* メイン */
+main{flex:1;overflow-y:auto;padding:16px 24px calc(28px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#list,#bar,section{max-width:1180px;margin:0 auto;animation:in .4s var(--sp)}
+@keyframes in{from{opacity:0;transform:translateY(14px) scale(.985)}}
+h1{font-size:36px;margin:2px 4px 14px;letter-spacing:-.5px}
+.bar{display:flex;align-items:center;gap:14px;margin-bottom:14px}.bar h1{margin:0}.bar .btn{min-height:48px;padding:0 20px 0 14px}
+.gh{font-size:20px;margin:22px 4px 10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.tile{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:20px;border-radius:32px;background:var(--sf);min-height:176px;transition:all .35s var(--sp)}
+.tile:active{transform:scale(.94);border-radius:20px}.tile b{font-size:19px;margin-top:8px}.tile small{color:var(--ov);font-size:14px;line-height:1.4}
+.ti{width:76px;height:76px;display:grid;place-items:center}.ti .ms{font-size:38px}
+.c0{background:var(--pc);color:var(--opc)}.c1{background:var(--sc);color:var(--osc)}.c2{background:var(--tc);color:var(--otc)}
+.s0{border-radius:50%}.s1{border-radius:26px}.s2{border-radius:62% 38% 46% 54%/44% 58% 42% 56%}.s3{border-radius:30px 50% 30px 50%}
+.cols{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));align-items:start}
+.card{background:var(--sf);border-radius:32px;padding:22px;margin-bottom:16px}
+.cols>div>.card:last-child{margin-bottom:0}
+.card h2{margin:0 0 12px;font-size:15px;color:var(--ov);font-weight:700}
+.sub{color:var(--ov);font-size:20px;margin-top:6px}
+.big{font-size:clamp(48px,9vw,92px);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-2px;line-height:1.05}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--p);color:var(--op);padding:0 26px;min-height:56px;border-radius:28px;font-weight:700;font-size:17px;transition:all .3s var(--sp)}
+.btn:active{transform:scale(.92);border-radius:16px}
+.btn.t{background:var(--sc);color:var(--osc)}.btn.r{background:var(--tc);color:var(--otc)}.btn.t.on{background:var(--p);color:var(--op)}.btn.sm{min-height:44px;padding:0 18px;font-size:15px}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.chip{background:var(--sf2);border-radius:22px;padding:12px 16px;display:flex;flex-direction:column;min-width:0}
+.chip b{font-size:13px;color:var(--ov)}.chip span{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.cp{cursor:pointer}.chip.cp:active{background:var(--pc)}
+input,select,textarea{font:inherit;font-size:18px;color:var(--on);background:var(--sf2);border:2px solid transparent;border-radius:22px;padding:14px 18px;min-height:56px;outline:0;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--p)}.fx{flex:1}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.grid button{all:unset;cursor:pointer;text-align:center;padding:20px 0;font-size:28px;font-weight:700;border-radius:32px;background:var(--sf2);transition:all .3s var(--sp);user-select:none;-webkit-user-select:none}
+.grid button:active{transform:scale(.9);border-radius:18px}
+.grid .op{background:var(--sc);color:var(--osc)}.grid .eq{background:var(--p);color:var(--op)}.grid .cl{background:var(--tc);color:var(--otc)}
+#sci button{font-size:22px;padding:22px 0}
+#disp{text-align:right;min-height:120px}#disp small{display:block;color:var(--ov);font-size:20px;min-height:28px;overflow:hidden}#disp .big{font-size:clamp(40px,7vw,70px);overflow-wrap:anywhere}
+.hi{display:flex;flex-direction:column;align-items:flex-end;padding:10px 16px;border-radius:18px;background:var(--sf2);margin-bottom:6px;cursor:pointer}.hi small{color:var(--ov)}.hi b{font-size:22px}
+#hl{max-height:240px;overflow:auto}
+.u2{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:start}#cat{display:flex;flex-direction:column;gap:8px}
+.laps{max-height:140px;overflow:auto;margin-top:10px;color:var(--ov);font-variant-numeric:tabular-nums}
+/* メモ */
+.memo{display:grid;grid-template-columns:290px 1fr;gap:16px;height:calc(100dvh - 150px - env(safe-area-inset-top))}
+.memo>div{display:flex;flex-direction:column;min-height:0}#nl{overflow:auto;margin-top:10px;flex:1}
+#nl button{all:unset;cursor:pointer;display:flex;flex-direction:column;padding:12px 16px;border-radius:20px;margin-bottom:6px;background:var(--sf2)}
+#nl button b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;gap:4px;align-items:center}#nl button small{color:var(--ov);font-size:12px;margin-top:2px}#nl button.on{background:var(--pc);color:var(--opc)}
+#tbr{display:flex;gap:2px;flex-wrap:wrap;background:var(--sf);border-radius:24px;padding:6px;margin-bottom:10px}
+#tbr button{all:unset;cursor:pointer;width:46px;height:46px;border-radius:16px;display:grid;place-items:center;transition:all .25s var(--sp)}#tbr button:active{background:var(--pc);transform:scale(.88)}
+#ed{flex:1;overflow:auto;background:var(--sf2);border-radius:28px;padding:22px;line-height:1.7;font-size:18px;outline:0;-webkit-user-select:text;user-select:text}
+#ed:empty:before{content:'ここに入力（自動保存）';color:var(--ov)}
+#ed h2{font-size:26px;margin:.4em 0}#ed h3{font-size:21px;margin:.4em 0}#ed blockquote{margin:.6em 0;padding:4px 16px;border-left:4px solid var(--p);color:var(--ov)}
+.ck{list-style:none;padding-left:0}.ck li{position:relative;padding-left:38px;min-height:28px;margin:4px 0}
+.ck li:before{content:'check_box_outline_blank';font-family:'Material Symbols Rounded';font-variation-settings:'FILL' 1;font-feature-settings:'liga';position:absolute;left:2px;top:0;font-size:26px;color:var(--p)}
+.ck li.done:before{content:'check_box'}.ck li.done{text-decoration:line-through;opacity:.6}
+html:not(.fl) .ck li:before{content:'☐';font-family:inherit}html:not(.fl) .ck li.done:before{content:'☑'}
+/* ToDo */
+.td{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:20px;background:var(--sf2);margin-bottom:8px}.td span{flex:1;font-size:18px}.td.d span{text-decoration:line-through;opacity:.55}
+.td button{all:unset;cursor:pointer;width:48px;height:48px;display:grid;place-items:center;border-radius:50%;color:var(--p)}.td .tx{color:var(--ov)}
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:12px}.fi{display:flex;gap:8px;align-items:center}.fi input{flex:1}
+#cv{width:100%;height:calc(100dvh - 400px);min-height:300px;border-radius:28px;background:var(--sf2);touch-action:none;display:block}
+#qc{width:min(100%,360px);aspect-ratio:1;image-rendering:pixelated;border-radius:20px;background:#fff;display:block;margin:0 auto}
+#lv{width:min(60vh,70vw,360px);aspect-ratio:1;margin:0 auto;border-radius:50%;background:var(--sf2);position:relative;border:6px solid var(--pc)}
+#lv:before,#lv:after{content:"";position:absolute;background:var(--ol)}#lv:before{left:50%;top:0;bottom:0;width:2px}#lv:after{top:50%;left:0;right:0;height:2px}
+#bub{position:absolute;width:20%;aspect-ratio:1;border-radius:50%;background:var(--p);left:40%;top:40%;box-shadow:0 4px 14px #0004}#bub.ok{background:#2e9e5b}
+#cpw{position:relative;width:min(60vh,70vw,360px);aspect-ratio:1;margin:0 auto}
+#dial{position:absolute;inset:0;border-radius:50%;background:var(--sf2);border:6px solid var(--pc)}
+#dial:before{content:"";position:absolute;inset:8px;border-radius:50%;background:repeating-conic-gradient(var(--ol) 0 .6deg,transparent .6deg 10deg);-webkit-mask:radial-gradient(circle,transparent 88%,#000 89%);mask:radial-gradient(circle,transparent 88%,#000 89%)}
+#dial b{position:absolute;transform:translate(-50%,-50%);font-size:30px}
+#mk{position:absolute;left:50%;top:-14px;transform:translateX(-50%);border:12px solid transparent;border-top:24px solid #d33;border-bottom:0}
+#sbar{height:28px;border-radius:14px;background:var(--sf2);overflow:hidden;margin:14px 0}#sfill{height:100%;width:0;background:#2e9e5b;transition:width .1s}
+#lo{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;padding:40px;color:#0007;font-size:18px}#lo[hidden]{display:none}
+.die{font-size:64px;line-height:1.1}
+.sw{height:56px;border-radius:14px;display:flex;align-items:flex-end;padding:4px 6px;font-size:11px}
+.tones{display:grid;grid-template-columns:repeat(11,1fr);gap:6px;margin-top:12px}
+@media(max-width:700px){
+body{flex-direction:column-reverse}
+nav{width:100%;flex-direction:row;align-items:center;padding:4px 6px max(4px,env(safe-area-inset-bottom));gap:2px;overflow:hidden}
+#fab,#set{display:none!important}#cats{flex-direction:row;flex:1;justify-content:space-around;gap:0}#hamb{width:48px}
+nav.open{position:fixed;left:0;top:0;bottom:0;width:min(86vw,330px);flex-direction:column;align-items:stretch;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 10px 12px;box-shadow:0 0 40px #0006}
+nav.open #cats{flex-direction:column;flex:none;gap:6px}nav.open #set{display:block!important}nav.open #fab{display:flex!important}nav.open #hamb{align-self:flex-start}
+body.op #scrim{display:block}
+.u2,.memo{grid-template-columns:1fr}#cat{flex-direction:row;flex-wrap:wrap}.memo{height:auto}#ed{min-height:320px}main{padding:12px 14px}.tones{grid-template-columns:repeat(6,1fr)}.tiles{grid-template-columns:repeat(2,1fr)}}
+</style></head><body>
+<nav id="rail">
+<button id="hamb" aria-label="メニュー"><i class="ms">menu</i></button>
+<button id="fab"><span class="ic"><i class="ms">edit</i></span><span class="lb">新規メモ</span></button>
+<div id="cats"></div>
+<div id="set"><h3>設定</h3>
+<div class="sg"><b>テーマカラー</b><div class="sw8" id="sws"></div><input type="range" id="hue" min="0" max="360"></div>
+<div class="sg"><b>外観</b><div class="seg" id="smode"><button data-v="auto">自動</button><button data-v="light">ライト</button><button data-v="dark">ダーク</button></div></div>
+<div class="sg"><b>文字サイズ</b><div class="seg" id="sfs"><button data-v=".9">小</button><button data-v="1">標準</button><button data-v="1.15">大</button></div></div>
+<div class="sg r2"><b>24時間表示</b><button class="swt" data-k="h24"></button></div>
+<div class="sg r2"><b>動きを減らす</b><button class="swt" data-k="rm"></button></div>
+<div class="sg"><button class="btn r sm" id="srs"><i class="ms">restart_alt</i>設定をリセット</button></div>
+</div></nav>
+<div id="scrim"></div>
+<main>
+<div id="bar" class="bar" hidden><button class="btn t" id="back"><i class="ms">arrow_back</i><span id="bk"></span></button><h1 id="at"></h1></div>
+<div id="list"></div>
+
+<section data-app="clock" hidden><div class="cols"><div class="card"><div class="big" id="time"></div><div class="sub" id="dt"></div></div>
+<div class="card"><h2>世界時計</h2><div class="chips" id="world"></div></div></div></section>
+
+<section data-app="sw" hidden><div class="card" style="max-width:680px"><div class="big" id="sw">00:00.00</div>
+<div class="row" style="margin-top:14px"><button class="btn" id="swS"><i class="ms">play_arrow</i>スタート</button><button class="btn t" id="swL"><i class="ms">flag</i>ラップ</button><button class="btn r" id="swR"><i class="ms">restart_alt</i>リセット</button></div><div class="laps" id="laps"></div></div></section>
+
+<section data-app="tm" hidden><div class="card" style="max-width:680px"><div class="big" id="tm">05:00</div>
+<div class="row" style="margin:14px 0" id="tpre"><button class="btn t sm" data-m="1">1分</button><button class="btn t sm" data-m="3">3分</button><button class="btn t sm" data-m="5">5分</button><button class="btn t sm" data-m="10">10分</button><button class="btn t sm" data-m="15">15分</button><button class="btn t sm" data-m="30">30分</button></div>
+<div class="row" style="margin-bottom:14px"><input id="tmM" type="number" min="0" value="5" style="width:96px"> 分 <input id="tmS" type="number" min="0" max="59" value="0" style="width:96px"> 秒</div>
+<div class="row"><button class="btn" id="tmB"><i class="ms">play_arrow</i>スタート</button><button class="btn r" id="tmR"><i class="ms">restart_alt</i>リセット</button></div></div></section>
+
+<section data-app="pomo" hidden><div class="card" style="max-width:680px"><div class="sub" id="pm" style="margin:0">作業中</div><div class="big" id="pt">25:00</div><div class="sub" id="pc2"></div>
+<div class="row" style="margin:14px 0"><button class="btn" id="pB"><i class="ms">play_arrow</i>スタート</button><button class="btn t" id="pS"><i class="ms">skip_next</i>スキップ</button><button class="btn r" id="pR"><i class="ms">restart_alt</i>リセット</button></div>
+<div class="row">作業<input id="pw" type="number" min="1" value="25" style="width:84px">休憩<input id="pb" type="number" min="1" value="5" style="width:84px">長休憩<input id="pl2" type="number" min="1" value="15" style="width:84px">分</div></div></section>
+
+<section data-app="calc" hidden><div class="cols"><div><div class="card"><div id="disp"><small id="hist"></small><div class="big" id="out">0</div></div></div><div class="grid" id="keys"></div></div>
+<div><div class="card"><h2>関数・定数（キーボードでも入力できます）</h2><div class="grid" id="sci"></div></div><div class="card"><h2>履歴（タップで呼び出し）</h2><div id="hl"></div></div></div></div></section>
+
+<section data-app="unit" hidden><div class="u2"><div id="cat"></div><div>
+<div class="card"><div class="row"><input id="uv" type="number" step="any" value="1" class="fx" style="font-size:28px"><select id="uf"></select></div>
+<div class="row" style="margin:12px 0"><button class="btn t" id="usw"><i class="ms">swap_vert</i>入れ替え</button></div>
+<div class="row"><input id="ur" readonly class="fx" style="font-size:28px;background:var(--pc)"><select id="ut"></select></div></div>
+<div class="card" style="margin:16px 0 0"><h2>すべての単位に換算</h2><div class="chips" id="uall"></div></div></div></div></section>
+
+<section data-app="memo" hidden><div class="memo"><div><button class="btn" id="nn"><i class="ms">add</i>新規メモ</button><input id="nq" placeholder="検索" style="margin-top:10px"><div id="nl"></div></div>
+<div><div id="tbr"></div><div id="ed" contenteditable="true"></div><div class="row" style="margin-top:10px"><button class="btn r sm" id="nd"><i class="ms">delete</i>削除</button><button class="btn t sm" id="np"><i class="ms">push_pin</i>ピン留め</button><button class="btn t sm" id="ncp"><i class="ms">content_copy</i>コピー</button><button class="btn t sm" id="nx"><i class="ms">ios_share</i>書き出し</button><span id="nc" class="sub" style="font-size:15px"></span></div></div></div></section>
+
+<section data-app="todo" hidden><div class="card" style="max-width:720px"><div class="row" style="margin-bottom:12px"><input id="ti" class="fx" placeholder="やることを入力"><button class="btn" id="ta2"><i class="ms">add</i>追加</button></div>
+<div class="row" style="margin-bottom:12px"><div class="seg" id="tfl" style="flex:1"><button data-v="all" class="on">すべて</button><button data-v="open">未完了</button><button data-v="done">完了</button></div></div>
+<div id="tl"></div><div class="row" style="margin-top:8px;justify-content:space-between"><span class="sub" id="tn2" style="font-size:15px;margin:0"></span><button class="btn t sm" id="tcl"><i class="ms">delete_sweep</i>完了を削除</button></div></div></section>
+
+<section data-app="graph" hidden><div class="card">
+<div class="fr"><div class="fi"><b style="color:#d0388a">y₁</b><input id="f1" value="sin(x)"></div><div class="fi"><b style="color:#2e7fd8">y₂</b><input id="f2" value="x^2/10"></div><div class="fi"><b style="color:#2e9e5b">y₃</b><input id="f3" value="" placeholder="例: abs(x), ln(x)"></div></div>
+<canvas id="cv"></canvas><div class="sub" id="trv" style="font-size:16px;margin:10px 0"></div>
+<div class="row"><button class="btn t" id="zi"><i class="ms">zoom_in</i>拡大</button><button class="btn t" id="zo"><i class="ms">zoom_out</i>縮小</button><button class="btn t" id="zr"><i class="ms">center_focus_strong</i>原点へ</button><span class="sub" style="font-size:15px">ドラッグで移動／ピンチで拡大縮小</span></div></div></section>
+
+<section data-app="level" hidden><div class="card"><div id="lv"><div id="bub"></div></div>
+<div class="big" id="ang" style="text-align:center;margin-top:16px;font-size:44px">--</div>
+<div class="row" style="justify-content:center;margin-top:14px"><button class="btn sb"><i class="ms">sensors</i>センサー開始</button><button class="btn t" id="lvC"><i class="ms">my_location</i>ここを0°に</button></div>
+<p class="sub" style="text-align:center;font-size:15px">iPadを平らな面に置いて使います（初回は許可が必要）</p></div></section>
+
+<section data-app="compass" hidden><div class="card"><div id="cpw"><div id="dial"><b style="top:11%;left:50%;color:#d33">N</b><b style="top:50%;left:89%">E</b><b style="top:89%;left:50%">S</b><b style="top:50%;left:11%">W</b></div><div id="mk"></div></div>
+<div class="big" id="hd" style="text-align:center;margin-top:18px;font-size:48px">--</div>
+<div class="row" style="justify-content:center;margin-top:14px"><button class="btn sb"><i class="ms">sensors</i>センサー開始</button></div></div></section>
+
+<section data-app="sound" hidden><div class="card" style="max-width:680px"><div class="big"><span id="sdb">--</span> <span style="font-size:28px">dB</span></div><div id="sbar"><div id="sfill"></div></div><div class="sub" id="sst" style="font-size:17px">未校正の目安値です（マイクの許可が必要）</div>
+<div class="row" style="margin-top:14px"><button class="btn" id="sB"><i class="ms">mic</i>測定開始</button></div></div></section>
+
+<section data-app="light" hidden><div class="card" style="max-width:680px"><h2>色を選んで点灯（タップで消灯）</h2><div class="row" id="lcs" style="margin-bottom:16px"></div><button class="btn" id="lB"><i class="ms">flashlight_on</i>全画面で点灯</button></div></section>
+
+<section data-app="date" hidden><div class="cols"><div>
+<div class="card"><h2>2つの日付の差</h2><div class="row"><input type="date" id="d1" class="fx"><i class="ms">arrow_forward</i><input type="date" id="d2" class="fx"></div><div class="big" id="dr0" style="font-size:44px;margin-top:16px"></div><div class="sub" id="dr1"></div></div>
+<div class="card"><h2>年齢・誕生日</h2><div class="row"><input type="date" id="bd0" class="fx"></div><div class="big" id="ag0" style="font-size:40px;margin-top:16px"></div><div class="sub" id="ag1" style="font-size:17px"></div></div></div>
+<div class="card"><h2>日付の加算・減算</h2><div class="row"><input type="date" id="ab" class="fx"><input type="number" id="an" value="100" style="width:110px"><select id="au"><option value="d">日</option><option value="w">週</option><option value="m">ヶ月</option><option value="y">年</option></select><select id="ad"><option value="1">後</option><option value="-1">前</option></select></div><div class="big" id="ar0" style="font-size:34px;margin-top:16px"></div><div class="sub" id="ar1"></div></div></div></section>
+
+<section data-app="money" hidden><div class="cols"><div>
+<div class="card"><h2>消費税</h2><div class="row"><input id="ta" type="number" inputmode="decimal" value="1000" class="fx"><select id="tr"><option value="10">10%</option><option value="8">8%（軽減）</option></select></div><div class="chips" style="margin-top:12px"><div class="chip"><b>税抜→税込</b><span id="t1"></span></div><div class="chip"><b>税込→税抜</b><span id="t2"></span></div><div class="chip"><b>税込の税額</b><span id="t3"></span></div></div></div>
+<div class="card"><h2>割引</h2><div class="row"><input id="ka" type="number" inputmode="decimal" value="5000" class="fx"><input id="kp" type="number" inputmode="decimal" value="20" style="width:100px"> % OFF</div><div class="chips" style="margin-top:12px"><div class="chip"><b>支払額</b><span id="k1"></span></div><div class="chip"><b>割引額</b><span id="k2"></span></div></div></div></div>
+<div class="card"><h2>割り勘</h2><div class="row"><input id="wa" type="number" inputmode="decimal" value="12800" class="fx"><input id="wn" type="number" value="5" style="width:90px"> 人</div><div class="row" style="margin:10px 0">端数切り上げ <select id="wu"><option value="1">1円</option><option value="10">10円</option><option value="100" selected>100円</option></select></div><div class="chips"><div class="chip"><b>1人あたり</b><span id="w1"></span></div><div class="chip"><b>集金合計</b><span id="w2"></span></div><div class="chip"><b>余り（幹事へ）</b><span id="w3"></span></div></div></div></div></section>
+
+<section data-app="base" hidden><div class="card" style="max-width:640px"><div class="row" style="flex-direction:column;align-items:stretch;gap:12px">
+<label>10進数<input id="bd" class="fx" style="width:100%" inputmode="numeric"></label><label>2進数<input id="bb" class="fx" style="width:100%" inputmode="numeric"></label><label>8進数<input id="bo" class="fx" style="width:100%" inputmode="numeric"></label><label>16進数<input id="bh" class="fx" style="width:100%;text-transform:uppercase" autocapitalize="off"></label></div></div></section>
+
+<section data-app="color" hidden><div class="cols"><div class="card"><input type="color" id="cin" value="#6a4fd8" style="width:100%;height:150px;padding:0;border-radius:28px"><div class="row" style="margin-top:12px"><input id="hx" class="fx" value="#6A4FD8"><button class="btn t" id="crn"><i class="ms">shuffle</i>ランダム</button></div></div>
+<div class="card"><h2>タップでコピー</h2><div class="chips" id="cc"></div><h2 style="margin-top:18px">トーン（明度）</h2><div class="tones" id="tn"></div></div></div></section>
+
+<section data-app="count" hidden><div class="cols"><div class="card"><textarea id="ct" style="width:100%;min-height:40vh;line-height:1.6;resize:vertical" placeholder="ここに文章を入力・貼り付け"></textarea>
+<div class="row" style="margin-top:10px" id="cvb"><button class="btn t sm" data-f="h2k">ひらがな→カタカナ</button><button class="btn t sm" data-f="k2h">カタカナ→ひらがな</button><button class="btn t sm" data-f="z2h">全角→半角（英数）</button><button class="btn t sm" data-f="h2z">半角→全角（英数）</button><button class="btn t sm" data-f="up">大文字</button><button class="btn t sm" data-f="low">小文字</button><button class="btn t sm" data-f="nospace">空白削除</button><button class="btn t sm" data-f="nonl">改行削除</button><button class="btn t sm" data-f="trim">空行削除</button></div>
+<div class="row" style="margin-top:10px"><button class="btn t sm" id="ccp"><i class="ms">content_copy</i>コピー</button><button class="btn r sm" id="cx"><i class="ms">delete</i>クリア</button></div></div>
+<div class="card"><div class="chips" id="cs"></div></div></div></section>
+
+<section data-app="qr" hidden><div class="cols"><div class="card">
+<div class="seg" id="qtp" style="margin-bottom:14px"><button data-t="text" class="on">テキスト・URL</button><button data-t="wifi">Wi-Fi</button><button data-t="vcard">連絡先</button></div>
+<div id="qp-text"><textarea id="qx" style="width:100%;min-height:150px" placeholder="URLや文章を入力"></textarea></div>
+<div id="qp-wifi" hidden class="row" style="flex-direction:column;align-items:stretch"><input id="ws" placeholder="ネットワーク名（SSID）"><input id="wp" placeholder="パスワード"><select id="wt"><option value="WPA">WPA/WPA2/WPA3</option><option value="WEP">WEP</option><option value="nopass">パスワードなし</option></select></div>
+<div id="qp-vcard" hidden class="row" style="flex-direction:column;align-items:stretch"><input id="vn" placeholder="名前"><input id="vt" type="tel" placeholder="電話番号"><input id="ve" type="email" placeholder="メールアドレス"></div>
+<div class="row" style="margin-top:14px">誤り訂正<select id="qe"><option value="L">L（低）</option><option value="M" selected>M（標準）</option><option value="Q">Q（高）</option><option value="H">H（最高）</option></select>色<select id="qk"><option value="t">テーマ色</option><option value="b">黒</option></select></div></div>
+<div class="card"><canvas id="qc" width="2" height="2"></canvas><div class="sub" id="qm" style="font-size:15px;text-align:center"></div><div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="qs"><i class="ms">ios_share</i>画像を保存・共有</button></div></div></div></section>
+
+<section data-app="dice" hidden><div class="cols">
+<div class="card"><h2>サイコロ</h2><div class="die" id="dice">🎲</div><div class="row" style="margin-top:12px"><select id="dn"><option>1</option><option>2</option><option>3</option><option>4</option></select> 個<button class="btn" id="dr"><i class="ms">casino</i>振る</button></div></div>
+<div class="card"><h2>コイン</h2><div class="big" id="coin" style="font-size:52px">🪙</div><div class="row" style="margin-top:12px"><button class="btn" id="cr"><i class="ms">toll</i>投げる</button></div></div></div></section>
+
+<section data-app="lot" hidden><div class="cols">
+<div class="card"><h2>乱数</h2><div class="big" id="rn" style="font-size:52px">–</div><div class="row" style="margin-top:12px"><input id="rmin" type="number" value="1" style="width:110px">〜<input id="rmax" type="number" value="100" style="width:110px"><button class="btn" id="rb"><i class="ms">tag</i>生成</button></div></div>
+<div class="card"><h2>くじ引き・順番決め（1行に1項目）</h2><textarea id="pl" style="width:100%;min-height:150px">A
+B
+C
+D</textarea><div class="row" style="margin:12px 0"><button class="btn" id="pk"><i class="ms">ads_click</i>1つ選ぶ</button><button class="btn t" id="ps"><i class="ms">shuffle</i>順番を決める</button></div><div class="big" id="po" style="font-size:36px"></div></div></div></section>
+</main>
+<div id="lo" hidden>タップで消灯</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';s.onload=function(){window.qdraw&&qdraw()};document.head.appendChild(s)"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],pad=n=>String(n).padStart(2,'0'),bt=(e,i,t)=>e.innerHTML=`<i class="ms">${i}</i>${t}`;
+const cpy=t=>{try{navigator.clipboard.writeText(t)}catch(e){}},esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+async function saveFile(blob,name){const f=new File([blob],name,{type:blob.type});try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){if(e.name=='AbortError')return}
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
+function chk(){document.fonts&&document.fonts.load("1em 'Material Symbols Rounded'").then(a=>a.length&&document.documentElement.classList.add('fl'),()=>0)}chk();addEventListener('load',chk);setTimeout(chk,2500);
+/* ===== ナビゲーション ===== */
+const CATS=[['home','ホーム','home','すべてのツール'],['time','時間','schedule','時計・計測'],['calc','計算','calculate','計算・変換'],['write','作成','edit_note','書く・作る'],['sense','センサー','sensors','端末のセンサーを活用'],['fun','あそび','casino','ランダム・ゲーム']];
+const APPS=[['clock','時計','schedule','time','現在時刻と世界時計'],['sw','ストップウォッチ','timer','time','ラップ付きの計測'],['tm','タイマー','hourglass_top','time','プリセット付きカウントダウン'],['pomo','ポモドーロ','timelapse','time','集中と休憩のサイクル'],
+['calc','電卓','calculate','calc','関数電卓・履歴つき'],['graph','関数グラフ','show_chart','calc','3本同時・タップで値を読む'],['unit','単位変換','straighten','calc','13種類の単位'],['base','進数変換','tag','calc','2・8・10・16進数'],['money','お金','payments','calc','消費税・割引・割り勘'],['date','日付','calendar_month','calc','日数差・加減算・年齢'],
+['memo','メモ','edit_note','write','書式つきリッチテキスト'],['todo','ToDo','checklist','write','やることリスト'],['qr','QRコード','qr_code_2','write','テキスト・Wi-Fi・連絡先'],['count','文字数','text_fields','write','カウントと文字変換'],['color','カラー','palette','write','HEX/RGB/HSLとトーン'],
+['level','水平器','adjust','sense','傾きを測る'],['compass','方位磁針','explore','sense','方角を調べる'],['sound','騒音計','graphic_eq','sense','周囲の音量の目安'],['light','ライト','flashlight_on','sense','画面を照明にする'],
+['dice','サイコロ・コイン','casino','fun','運試し'],['lot','くじ・乱数','ads_click','fun','抽選と順番決め']];
+const rail=$('#rail'),cn=c=>CATS.find(x=>x[0]==c);
+$('#cats').innerHTML=CATS.map(c=>`<button class="it" data-c="${c[0]}"><span class="ic"><i class="ms">${c[2]}</i><em class="bd"></em></span><span class="lb">${c[1]}</span></button>`).join('');
+const tile=(a,i)=>`<button class="tile" data-a="${a[0]}"><span class="ti c${i%3} s${i%4}"><i class="ms">${a[2]}</i></span><b>${a[1]}</b><small>${a[4]}</small></button>`;
+function setMenu(o){rail.classList.toggle('open',o);document.body.classList.toggle('op',o);$('#hamb i').textContent=o?'menu_open':'menu'}
+$('#hamb').onclick=()=>setMenu(!rail.classList.contains('open'));$('#scrim').onclick=()=>setMenu(false);
+let view={c:'home',a:null};
+function show(c,a){view={c,a};try{localStorage.setItem('mt-v',a?'a:'+a:'c:'+c)}catch(e){}
+if(a!='sound'&&typeof sT!='undefined'&&sT)sStop();
+$$('#cats .it').forEach(x=>x.classList.toggle('on',x.dataset.c==c));$$('section[data-app]').forEach(s=>s.hidden=s.dataset.app!=a);
+const L=$('#list');L.hidden=!!a;$('#bar').hidden=!a;
+if(a){$('#at').textContent=APPS.find(x=>x[0]==a)[1];$('#bk').textContent=cn(c)[1];if(a=='graph')draw();if(a=='qr')qdraw()}
+else{L.innerHTML=c=='home'?'<h1>ツールボックス</h1>'+CATS.slice(1).map(k=>`<h2 class="gh">${k[1]}</h2><div class="tiles">${APPS.filter(x=>x[3]==k[0]).map(tile).join('')}</div>`).join(''):`<h1>${cn(c)[1]}</h1><div class="sub" style="margin:-8px 4px 18px">${cn(c)[3]}</div><div class="tiles">${APPS.filter(x=>x[3]==c).map(tile).join('')}</div>`;
+$$('.tile').forEach(b=>b.onclick=()=>openApp(b.dataset.a))}
+$('main').scrollTop=0;if(innerWidth<=700)setMenu(false)}
+const openApp=a=>show(APPS.find(x=>x[0]==a)[3],a);
+$$('#cats .it').forEach(b=>b.onclick=()=>show(b.dataset.c));$('#back').onclick=()=>show(view.c);
+$('#fab').onclick=()=>{openApp('memo');$('#nn').click()};
+function bdg(c,t){const e=$(`#cats [data-c=${c}] .bd`);e.className='bd'+(t===true?' dot':'');e.textContent=t===true||!t?'':t}
+/* ===== 設定 ===== */
+const HUES=[262,215,175,140,45,20,340,0];
+$('#sws').innerHTML=HUES.map(h=>`<button data-h="${h}" style="background:hsl(${h},55%,45%)"></button>`).join('');
+function sUI(){$$('#sws button').forEach(b=>b.classList.toggle('on',+b.dataset.h==S.h));$('#hue').value=S.h;$$('#smode button').forEach(b=>b.classList.toggle('on',b.dataset.v==S.mode));$$('#sfs button').forEach(b=>b.classList.toggle('on',+b.dataset.v==S.fs));
+$$('.swt').forEach(b=>b.classList.toggle('on',!!S[b.dataset.k]));document.documentElement.classList.toggle('rm',!!S.rm);$('main').style.zoom=S.fs;theme();sv();tick();if(view.a=='qr')qdraw()}
+$$('#sws button').forEach(b=>b.onclick=()=>{S.h=+b.dataset.h;sUI()});$('#hue').oninput=()=>{S.h=+$('#hue').value;sUI()};
+$$('#smode button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.v;sUI()});$$('#sfs button').forEach(b=>b.onclick=()=>{S.fs=+b.dataset.v;sUI()});
+$$('.swt').forEach(b=>b.onclick=()=>{S[b.dataset.k]=!S[b.dataset.k];sUI()});
+$('#srs').onclick=()=>{S={h:262,mode:'auto',fs:1,h24:true,rm:false};sUI()};
+/* ===== 時間 ===== */
+const Z=[['東京','Asia/Tokyo'],['ニューヨーク','America/New_York'],['ロサンゼルス','America/Los_Angeles'],['ロンドン','Europe/London'],['パリ','Europe/Paris'],['ドバイ','Asia/Dubai'],['シドニー','Australia/Sydney'],['ホノルル','Pacific/Honolulu']];
+const tick=()=>{const n=new Date,h12=!S.h24;$('#time').textContent=n.toLocaleTimeString('ja-JP',{hour12:h12});$('#dt').textContent=n.toLocaleDateString('ja-JP',{dateStyle:'full'});
+$('#world').innerHTML=Z.map(([l,z])=>`<div class="chip"><b>${l}</b><span>${n.toLocaleTimeString('ja-JP',{timeZone:z,hour:'2-digit',minute:'2-digit',hour12:h12})}</span></div>`).join('')};setInterval(tick,500);
+let swT=0,swR=0,swI,laps=[];const fmt=ms=>`${pad(ms/60000|0)}:${pad(ms/1000%60|0)}.${pad(ms/10%100|0)}`;
+$('#swS').onclick=()=>{if(swI){clearInterval(swI);swI=0;swR+=Date.now()-swT;bt($('#swS'),'play_arrow','再開')}else{swT=Date.now();swI=setInterval(()=>$('#sw').textContent=fmt(swR+Date.now()-swT),30);bt($('#swS'),'pause','停止')}};
+$('#swL').onclick=()=>{const t=swR+(swI?Date.now()-swT:0);if(!t)return;laps.unshift(fmt(t));$('#laps').innerHTML=laps.map((l,i)=>`<div>#${laps.length-i}　${l}</div>`).join('')};
+$('#swR').onclick=()=>{clearInterval(swI);swI=0;swR=0;laps=[];$('#sw').textContent='00:00.00';$('#laps').innerHTML='';bt($('#swS'),'play_arrow','スタート')};
+let tmI,tmEnd,tmRest=300,ac;const tmShow=s=>$('#tm').textContent=`${pad(s/60|0)}:${pad(s%60)}`,tmSet=()=>(+$('#tmM').value||0)*60+(+$('#tmS').value||0);
+const beep=()=>{try{for(let i=0;i<4;i++){const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=880;g.gain.value=.3;o.start(ac.currentTime+i*.4);o.stop(ac.currentTime+i*.4+.2)}}catch(e){}};
+const unlock=()=>{try{ac=ac||new AudioContext;ac.resume()}catch(e){}};
+function tmStop(){clearInterval(tmI);tmI=0;bt($('#tmB'),'play_arrow','スタート')}
+$('#tmB').onclick=()=>{if(tmI){tmRest=Math.max(0,Math.ceil((tmEnd-Date.now())/1000));tmStop();return}
+if(tmRest<=0)tmRest=tmSet();if(tmRest<=0)return;unlock();tmEnd=Date.now()+tmRest*1000;bt($('#tmB'),'pause','停止');
+tmI=setInterval(()=>{const r=Math.ceil((tmEnd-Date.now())/1000);tmShow(Math.max(r,0));if(r<=0){tmStop();tmRest=0;beep()}},200)};
+$('#tmR').onclick=()=>{tmStop();tmRest=tmSet();tmShow(tmRest)};$('#tmM').oninput=$('#tmS').oninput=()=>{if(!tmI){tmRest=tmSet();tmShow(tmRest)}};
+$$('#tpre button').forEach(b=>b.onclick=()=>{$('#tmM').value=b.dataset.m;$('#tmS').value=0;tmStop();tmRest=tmSet();tmShow(tmRest)});
+let pI,pEnd,pRest=1500,pMode='work',pN=0;const pDur=m=>(m=='work'?+$('#pw').value||25:m=='break'?+$('#pb').value||5:+$('#pl2').value||15)*60;
+function pShow(){$('#pt').textContent=`${pad(pRest/60|0)}:${pad(pRest%60)}`;$('#pm').textContent={work:'作業中',break:'休憩中',long:'長い休憩'}[pMode];$('#pc2').textContent=`完了 ${pN} セット`}
+function pStop(){clearInterval(pI);pI=0;bt($('#pB'),'play_arrow','スタート')}
+function pRun(){pEnd=Date.now()+pRest*1000;bt($('#pB'),'pause','一時停止');pI=setInterval(()=>{const r=Math.ceil((pEnd-Date.now())/1000);pRest=Math.max(r,0);pShow();if(r<=0){clearInterval(pI);beep();pNext();pRun()}},250)}
+function pNext(){if(pMode=='work'){pN++;pMode=pN%4?'break':'long'}else pMode='work';pRest=pDur(pMode);pShow()}
+$('#pB').onclick=()=>{if(pI){pStop();return}unlock();pRun()};
+$('#pS').onclick=()=>{const w=!!pI;pStop();pNext();if(w)pRun()};
+$('#pR').onclick=()=>{pStop();pMode='work';pN=0;pRest=pDur('work');pShow()};
+$$('#pw,#pb,#pl2').forEach(e=>e.oninput=()=>{if(!pI){pRest=pDur(pMode);pShow()}});pShow();
+/* ===== 電卓 ===== */
+let ex='',ans='',deg=true,hs=[];const FN=['sin','cos','tan','asin','acos','atan','log','ln','abs','exp'],R=Math.PI/180;
+const F={sin:x=>Math.sin(deg?x*R:x),cos:x=>Math.cos(deg?x*R:x),tan:x=>Math.tan(deg?x*R:x),asin:x=>Math.asin(x)/(deg?R:1),acos:x=>Math.acos(x)/(deg?R:1),atan:x=>Math.atan(x)/(deg?R:1),log:Math.log10,ln:Math.log,sqrt:Math.sqrt,abs:Math.abs,exp:Math.exp};
+$('#keys').innerHTML=['C','(',')','÷','7','8','9','×','4','5','6','−','1','2','3','+','0','.','⌫','='].map(k=>`<button class="${'÷×−+'.includes(k)?'op':k=='='?'eq':k=='C'?'cl':''}">${k}</button>`).join('');
+$('#sci').innerHTML=['sin','cos','tan','DEG','asin','acos','atan','√','log','ln','abs','exp','π','ℯ','^','%'].map(k=>`<button class="op">${k}</button>`).join('');
+function ev(s){s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/π/g,'('+Math.PI+')').replace(/ℯ/g,'('+Math.E+')').replace(/√/g,'F.sqrt').replace(/\^/g,'**').replace(/%/g,'/100').replace(/\b(asin|acos|atan|sin|cos|tan|log|ln|abs|exp)\b/g,'F.$1').replace(/(^|\()\s*-/g,(m,p)=>p+'0-');
+if(/[^0-9+\-*/().\s]/.test(s.replace(/F\.(sqrt|asin|acos|atan|sin|cos|tan|log|ln|abs|exp)/g,'')))throw 0;const r=Function('F','"use strict";return('+s+')')(F);if(typeof r!='number'||!isFinite(r))throw 0;return +r.toPrecision(12)}
+function rh(){$('#hl').innerHTML=hs.map(([e,r],i)=>`<div class="hi" data-i="${i}"><small>${e}</small><b>${r}</b></div>`).join('')||'<div class="sub" style="font-size:15px">まだ履歴はありません</div>';
+$$('#hl .hi').forEach(d=>d.onclick=()=>{ans='';ex=String(hs[+d.dataset.i][1]);$('#out').textContent=ex})}
+function press(k){
+if(k=='C'){ex='';ans='';$('#hist').textContent=''}else if(k=='⌫')ex=ex.slice(0,-1);
+else if(k=='DEG'||k=='RAD'){deg=!deg;$$('#sci button').forEach(b=>{if(/^(DEG|RAD)$/.test(b.textContent))b.textContent=deg?'DEG':'RAD'});return}
+else if(k=='='){if(!ex)return;try{const e0=ex;ans=ev(ex);$('#hist').textContent=e0+' =';hs.unshift([e0,ans]);hs=hs.slice(0,30);rh();ex=String(ans)}catch(e){ans='エラー';ex=''}}
+else{if(ans!==''&&!'÷×−+^%)'.includes(k)&&ex==String(ans))ex='';ans='';ex+=(FN.includes(k)||k=='√')?k+'(':k}
+$('#out').textContent=ex||(ans!==''?ans:'0')}
+$$('#keys button,#sci button').forEach(b=>b.onclick=()=>press(b.textContent));rh();
+addEventListener('keydown',e=>{if(view.a!='calc'||/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;const m={'*':'×','/':'÷','-':'−',Enter:'=',Backspace:'⌫',Escape:'C'},k=m[e.key]||e.key;if(/^[0-9.()+^%×÷−=⌫C]$/.test(k)){e.preventDefault();press(k)}});
+/* ===== 単位 ===== */
+const U={'長さ':{m:1,km:1e3,cm:.01,mm:.001,'in':.0254,ft:.3048,yd:.9144,mi:1609.344,'尺':.30303,'里':3927.27},'重さ':{kg:1,g:.001,mg:1e-6,t:1e3,lb:.45359237,oz:.028349523,'貫':3.75,'匁':.00375},'面積':{'m²':1,'km²':1e6,ha:1e4,'ft²':.09290304,acre:4046.8564,'坪':3.3057851,'畳':1.62},'体積':{L:1,mL:.001,'m³':1e3,gal:3.785412,cup:.2365882,'合':.18039,'升':1.8039},'速度':{'m/s':1,'km/h':1/3.6,mph:.44704,kn:.514444,Mach:340.29},'データ':{B:1,KB:1024,MB:1048576,GB:1073741824,TB:1099511627776},'時間':{s:1,min:60,h:3600,'日':86400,'週':604800,'年':31557600},'温度':{'°C':1,'°F':1,K:1},'角度':{'°':1,rad:180/Math.PI,grad:.9,'回転':360},'エネルギー':{J:1,kJ:1e3,kcal:4184,Wh:3600,kWh:3.6e6},'圧力':{Pa:1,hPa:100,kPa:1e3,bar:1e5,atm:101325,mmHg:133.322,psi:6894.757}};
+let cat='長さ';const T={'°C':[c=>c,c=>c],'°F':[f=>(f-32)*5/9,c=>c*9/5+32],K:[k=>k-273.15,c=>c+273.15]};
+$('#cat').innerHTML=Object.keys(U).map(c=>`<button class="btn t" data-c="${c}">${c}</button>`).join('');
+const toU=(v,f,t)=>cat=='温度'?T[t][1](T[f][0](v)):v*U[cat][f]/U[cat][t];
+function setCat(c){cat=c;$$('#cat button').forEach(b=>b.classList.toggle('on',b.dataset.c==c));const o=Object.keys(U[c]).map(u=>`<option>${u}</option>`).join('');$('#uf').innerHTML=$('#ut').innerHTML=o;$('#ut').selectedIndex=1;conv()}
+function conv(){const v=parseFloat($('#uv').value),f=$('#uf').value,t=$('#ut').value;if(isNaN(v)){$('#ur').value='';$('#uall').innerHTML='';return}
+$('#ur').value=+toU(v,f,t).toPrecision(10);$('#uall').innerHTML=Object.keys(U[cat]).map(u=>`<div class="chip"><b>${u}</b><span>${+toU(v,f,u).toPrecision(7)}</span></div>`).join('')}
+$$('#cat button').forEach(b=>b.onclick=()=>setCat(b.dataset.c));$('#uv').oninput=$('#uf').onchange=$('#ut').onchange=conv;
+$('#usw').onclick=()=>{const a=$('#uf').selectedIndex;$('#uf').selectedIndex=$('#ut').selectedIndex;$('#ut').selectedIndex=a;conv()};setCat('長さ');
+/* ===== メモ（リッチテキスト） ===== */
+let N=[],cur=null;try{N=JSON.parse(localStorage.getItem('mt-notes')||'[]')}catch(e){}
+N.forEach(n=>{if(n.h==null){n.h=esc(n.x||'').replace(/\n/g,'<br>');n.u=n.u||n.id}});
+const saveN=()=>{try{localStorage.setItem('mt-notes',JSON.stringify(N))}catch(e){}},ed=$('#ed'),curN=()=>N.find(n=>n.id==cur);
+function rl(){const q=$('#nq').value.toLowerCase();N.sort((a,b)=>(b.p||0)-(a.p||0)||b.u-a.u);
+$('#nl').innerHTML=N.filter(n=>(n.x||'').toLowerCase().includes(q)).map(n=>`<button data-i="${n.id}" class="${n.id==cur?'on':''}"><b>${n.p?'<i class="ms" style="font-size:16px">push_pin</i>':''}${esc((n.x||'').trim().split('\n')[0]||'無題のメモ')}</b><small>${new Date(n.u).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</small></button>`).join('');
+$$('#nl button').forEach(b=>b.onclick=()=>sel(+b.dataset.i))}
+function info(){const n=curN();$('#nc').textContent=n?`${[...(n.x||'').replace(/\s/g,'')].length}文字`:'';$('#np').classList.toggle('on',!!(n&&n.p))}
+function sel(id){cur=id;const n=curN();ed.innerHTML=n?n.h:'';rl();info()}
+ed.oninput=()=>{let n=curN();if(!n){n={id:Date.now(),h:'',x:'',u:Date.now()};N.unshift(n);cur=n.id}n.h=ed.innerHTML;n.x=ed.innerText;n.u=Date.now();saveN();rl();info()};
+ed.addEventListener('paste',e=>{e.preventDefault();document.execCommand('insertText',false,(e.clipboardData||window.clipboardData).getData('text/plain'))});
+ed.onclick=e=>{const li=e.target.closest&&e.target.closest('ul.ck>li');if(li&&e.clientX-li.getBoundingClientRect().left<38){li.classList.toggle('done');ed.oninput()}};
+const TB=[['bold','format_bold'],['italic','format_italic'],['underline','format_underlined'],['strikeThrough','strikethrough_s'],['h','title'],['h3','format_size'],['ul','format_list_bulleted'],['ol','format_list_numbered'],['ck','checklist'],['quote','format_quote'],['hl','format_color_fill'],['dt','event'],['cl','format_clear']];
+function fmt2(k){ed.focus();const x=(c,v)=>document.execCommand(c,false,v),bl=()=>(document.queryCommandValue('formatBlock')||'').toLowerCase();
+if(['bold','italic','underline','strikeThrough'].includes(k))x(k);
+else if(k=='h')x('formatBlock',bl()=='h2'?'<p>':'<h2>');else if(k=='h3')x('formatBlock',bl()=='h3'?'<p>':'<h3>');else if(k=='quote')x('formatBlock',bl()=='blockquote'?'<p>':'<blockquote>');
+else if(k=='ul')x('insertUnorderedList');else if(k=='ol')x('insertOrderedList');
+else if(k=='ck'){const up=()=>{const s=getSelection();let n=s.anchorNode;n=n&&(n.nodeType==3?n.parentNode:n);return n&&n.closest&&n.closest('ul')};let u=up();if(!u){x('insertUnorderedList');u=up()}if(u)u.classList.toggle('ck')}
+else if(k=='hl')x('hiliteColor',/214/.test(document.queryCommandValue('hiliteColor'))?'transparent':'rgba(255,214,0,.45)');
+else if(k=='dt')x('insertText',new Date().toLocaleString('ja-JP'));else if(k=='cl'){x('removeFormat');x('formatBlock','<p>')}
+ed.oninput()}
+$('#tbr').innerHTML=TB.map(([k,i])=>`<button data-k="${k}"><i class="ms">${i}</i></button>`).join('');
+$$('#tbr button').forEach(b=>{b.onmousedown=b.onpointerdown=e=>e.preventDefault();b.onclick=()=>fmt2(b.dataset.k)});
+$('#nq').oninput=rl;
+$('#nn').onclick=()=>{const n={id:Date.now(),h:'',x:'',u:Date.now()};N.unshift(n);saveN();$('#nq').value='';sel(n.id);ed.focus()};
+$('#nd').onclick=()=>{if(cur==null||!confirm('このメモを削除しますか？'))return;N=N.filter(n=>n.id!=cur);cur=null;ed.innerHTML='';saveN();rl();info()};
+$('#np').onclick=()=>{const n=curN();if(n){n.p=!n.p;saveN();rl();info()}};$('#ncp').onclick=()=>{const n=curN();n&&cpy(n.x)};
+$('#nx').onclick=()=>{const n=curN();if(n)saveFile(new Blob([`<!doctype html><meta charset="utf-8"><title>メモ</title><body style="font-family:sans-serif;max-width:700px;margin:2em auto;line-height:1.7">${n.h}`],{type:'text/html'}),'memo.html')};
+if(N.length){N.sort((a,b)=>(b.p||0)-(a.p||0)||b.u-a.u);cur=N[0].id;ed.innerHTML=N[0].h}rl();info();
+/* ===== ToDo ===== */
+let TD=[],tf='all';try{TD=JSON.parse(localStorage.getItem('mt-todo')||'[]')}catch(e){}
+const saveT=()=>{try{localStorage.setItem('mt-todo',JSON.stringify(TD))}catch(e){}};
+function rt(){$('#tl').innerHTML=TD.filter(t=>tf=='all'||(tf=='open')==!t.d).map(t=>`<div class="td${t.d?' d':''}" data-i="${t.id}"><button class="tk"><i class="ms">${t.d?'check_box':'check_box_outline_blank'}</i></button><span>${esc(t.t)}</span><button class="tx"><i class="ms">delete</i></button></div>`).join('')||'<div class="sub" style="font-size:16px">項目はありません</div>';
+$('#tn2').textContent=`未完了 ${TD.filter(t=>!t.d).length}件 ／ 全${TD.length}件`;
+$$('#tl .tk').forEach(b=>b.onclick=()=>{const t=TD.find(t=>t.id==b.closest('.td').dataset.i);t.d=!t.d;saveT();rt()});
+$$('#tl .tx').forEach(b=>b.onclick=()=>{TD=TD.filter(t=>t.id!=b.closest('.td').dataset.i);saveT();rt()});bdg('write',TD.filter(t=>!t.d).length)}
+const addT=()=>{const v=$('#ti').value.trim();if(!v)return;TD.unshift({id:Date.now(),t:v,d:false});$('#ti').value='';saveT();rt()};
+$('#ta2').onclick=addT;$('#ti').onkeydown=e=>{if(e.key=='Enter')addT()};
+$$('#tfl button').forEach(b=>b.onclick=()=>{tf=b.dataset.v;$$('#tfl button').forEach(x=>x.classList.toggle('on',x==b));rt()});
+$('#tcl').onclick=()=>{TD=TD.filter(t=>!t.d);saveT();rt()};rt();
+/* ===== グラフ ===== */
+const cv=$('#cv'),cx=cv.getContext('2d');let V={x:0,y:0,s:50},tr=null,mv=0;const OK=new Set(Object.getOwnPropertyNames(Math).concat('x'));
+function comp(e){e=e.trim().replace(/\^/g,'**').replace(/π/g,'PI').replace(/\be\b/g,'E').replace(/\blog\b/g,'log10').replace(/\bln\b/g,'log').replace(/(^|\()\s*-/g,(m,p)=>p+'0-').replace(/(\b\d+(?:\.\d+)?|\))\s*(?=x\b|\(|[a-zA-Z])/g,'$1*');
+if(!e||/[^0-9a-zA-Z+\-*/().,\s]/.test(e)||(e.match(/[a-zA-Z_]+/g)||[]).some(w=>!OK.has(w)))return null;try{return new Function('x','with(Math){return '+e+'}')}catch(e){return null}}
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n);
+function draw(){const d=devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;cv.width=w*d;cv.height=h*d;cx.setTransform(d,0,0,d,0,0);
+const X=x=>w/2+(x-V.x)*V.s,Y=y=>h/2-(y-V.y)*V.s;let st=1;while(st*V.s<60)st*=2.5;while(st*V.s>150)st/=2.5;
+cx.font='12px sans-serif';cx.fillStyle=css('--ov');cx.lineWidth=1;cx.strokeStyle=css('--ol');
+for(let x=Math.ceil((V.x-w/2/V.s)/st)*st;x<V.x+w/2/V.s;x+=st){cx.beginPath();cx.moveTo(X(x),0);cx.lineTo(X(x),h);cx.stroke();cx.fillText(+x.toFixed(6),X(x)+3,Math.min(Math.max(Y(0)+14,14),h-4))}
+for(let y=Math.ceil((V.y-h/2/V.s)/st)*st;y<V.y+h/2/V.s;y+=st){cx.beginPath();cx.moveTo(0,Y(y));cx.lineTo(w,Y(y));cx.stroke();cx.fillText(+y.toFixed(6),Math.min(Math.max(X(0)+4,4),w-34),Y(y)-3)}
+cx.strokeStyle=css('--on');cx.lineWidth=2;cx.beginPath();cx.moveTo(X(0),0);cx.lineTo(X(0),h);cx.moveTo(0,Y(0));cx.lineTo(w,Y(0));cx.stroke();const A=[];
+[['#f1','#d0388a','y₁'],['#f2','#2e7fd8','y₂'],['#f3','#2e9e5b','y₃']].forEach(([id,c,l])=>{const f=comp($(id).value);$(id).style.borderColor=f||!$(id).value.trim()?'':'#d33';if(!f)return;A.push([f,c,l]);cx.strokeStyle=c;cx.lineWidth=3;cx.beginPath();let pen=false,py;
+for(let i=0;i<=w;i++){const x=V.x+(i-w/2)/V.s;let y;try{y=f(x)}catch(e){y=NaN}if(!isFinite(y)||Math.abs(Y(y))>1e5){pen=false;continue}const sy=Y(y);if(pen&&Math.abs(sy-py)>h*2)pen=false;pen?cx.lineTo(i,sy):cx.moveTo(i,sy);pen=true;py=sy}cx.stroke()});
+if(tr!=null){const sx=X(tr);cx.setLineDash([6,6]);cx.strokeStyle=css('--ov');cx.lineWidth=1.5;cx.beginPath();cx.moveTo(sx,0);cx.lineTo(sx,h);cx.stroke();cx.setLineDash([]);let t=`x = ${+tr.toFixed(4)}`;
+A.forEach(([f,c,l])=>{let y;try{y=f(tr)}catch(e){y=NaN}if(isFinite(y)){cx.fillStyle=c;cx.beginPath();cx.arc(sx,Y(y),6,0,7);cx.fill();t+=`　${l} = ${+y.toFixed(4)}`}});$('#trv').textContent=t}else $('#trv').textContent='グラフをタップすると値を読み取れます'}
+$('#f1').oninput=$('#f2').oninput=$('#f3').oninput=draw;addEventListener('resize',draw);
+$('#zi').onclick=()=>{V.s*=1.4;draw()};$('#zo').onclick=()=>{V.s/=1.4;draw()};$('#zr').onclick=()=>{V={x:0,y:0,s:50};tr=null;draw()};
+const P=new Map;cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);P.set(e.pointerId,e);if(P.size==1)mv=0};
+cv.onpointermove=e=>{const o=P.get(e.pointerId);if(!o)return;
+if(P.size==1){const dx=e.clientX-o.clientX,dy=e.clientY-o.clientY;mv+=Math.abs(dx)+Math.abs(dy);V.x-=dx/V.s;V.y+=dy/V.s}
+else if(P.size==2){mv=99;const[a,b]=[...P.values()];const d0=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);P.set(e.pointerId,e);const[c,d]=[...P.values()];const d1=Math.hypot(c.clientX-d.clientX,c.clientY-d.clientY);if(d0)V.s=Math.min(1e5,Math.max(1,V.s*d1/d0))}
+P.set(e.pointerId,e);draw()};
+cv.onpointerup=e=>{if(P.size==1&&mv<8){const r=cv.getBoundingClientRect();tr=V.x+(e.clientX-r.left-r.width/2)/V.s;draw()}P.delete(e.pointerId)};cv.onpointercancel=e=>P.delete(e.pointerId);
+cv.onwheel=e=>{e.preventDefault();V.s=Math.max(1,V.s*(e.deltaY<0?1.1:.9));draw()};
+/* ===== センサー ===== */
+let sOn=0,off=[0,0],last=[0,0];
+async function sensor(){try{if(DeviceOrientationEvent.requestPermission&&await DeviceOrientationEvent.requestPermission()!='granted')return}catch(e){$('#ang').textContent=$('#hd').textContent='センサー使用不可';return}
+if(!sOn){addEventListener('deviceorientation',ori,true);sOn=1}$$('.sb').forEach(b=>bt(b,'sensors','動作中'))}
+$$('.sb').forEach(b=>b.onclick=sensor);const DIR=['北','北東','東','南東','南','南西','西','北西'];
+function ori(e){const b=e.beta||0,g=e.gamma||0;last=[g,b];const x=g-off[0],y=b-off[1],Rr=30,el=$('#bub');
+el.style.left=(40+Math.max(-Rr,Math.min(Rr,x*Rr/20)))+'%';el.style.top=(40+Math.max(-Rr,Math.min(Rr,y*Rr/20)))+'%';el.classList.toggle('ok',Math.hypot(x,y)<1);$('#ang').textContent=`X ${x.toFixed(1)}°　Y ${y.toFixed(1)}°`;
+const h=e.webkitCompassHeading!=null?e.webkitCompassHeading:(360-(e.alpha||0))%360;$('#dial').style.transform=`rotate(${-h}deg)`;$('#hd').textContent=`${DIR[Math.round(h/45)%8]} ${Math.round(h)}°`}
+$('#lvC').onclick=()=>{off=[...last]};
+let sT,sM,sCtx;
+async function sStart(){if(sT)return;try{sM=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){$('#sst').textContent='マイクを使用できません（許可を確認してください）';return}
+sCtx=new AudioContext;const an=sCtx.createAnalyser();an.fftSize=2048;sCtx.createMediaStreamSource(sM).connect(an);const buf=new Float32Array(2048);let mn=999,mx=0,sm=0,n=0;bt($('#sB'),'stop','停止');
+sT=setInterval(()=>{an.getFloatTimeDomainData(buf);let s=0;for(const x of buf)s+=x*x;const db=Math.min(120,Math.max(0,20*Math.log10(Math.sqrt(s/2048)||1e-6)+100));mn=Math.min(mn,db);mx=Math.max(mx,db);sm+=db;n++;
+$('#sdb').textContent=Math.round(db);$('#sfill').style.width=db/1.2+'%';$('#sfill').style.background=db<50?'#2e9e5b':db<75?'#f2c94c':'#d33';
+$('#sst').textContent=`最小 ${Math.round(mn)} ／ 平均 ${Math.round(sm/n)} ／ 最大 ${Math.round(mx)}　${db<40?'静か':db<60?'ふつう':db<80?'にぎやか':'うるさい'}`},100)}
+function sStop(){clearInterval(sT);sT=0;sM&&sM.getTracks().forEach(t=>t.stop());sCtx&&sCtx.close();bt($('#sB'),'mic','測定開始')}
+$('#sB').onclick=()=>sT?sStop():sStart();
+const LC={'白':'#ffffff','電球色':'#ffd9a0','赤':'#ff2a2a','青':'#2a6bff','緑':'#2aff6b'};let lcol='#ffffff',wl;
+$('#lcs').innerHTML=Object.entries(LC).map(([k,c],i)=>`<button class="btn t sm${i?'':' on'}" data-c="${c}"><span style="width:20px;height:20px;border-radius:50%;background:${c};border:2px solid var(--ol)"></span>${k}</button>`).join('');
+$$('#lcs button').forEach(b=>b.onclick=()=>{lcol=b.dataset.c;$$('#lcs button').forEach(x=>x.classList.toggle('on',x==b))});
+$('#lB').onclick=async()=>{$('#lo').style.background=lcol;$('#lo').hidden=false;try{wl=await navigator.wakeLock.request('screen')}catch(e){}};
+$('#lo').onclick=()=>{$('#lo').hidden=true;try{wl&&wl.release()}catch(e){}};
+/* ===== 日付 ===== */
+const dd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)},iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,u0=d=>Date.UTC(d.getFullYear(),d.getMonth(),d.getDate());
+const fd=d=>d.toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'}),jp=d=>d.toLocaleDateString('ja-JP-u-ca-japanese',{era:'long',year:'numeric',month:'long',day:'numeric'});
+function dcalc(){if($('#d1').value&&$('#d2').value){let a=dd($('#d1').value),b=dd($('#d2').value);const n=(u0(b)-u0(a))/864e5,m=Math.abs(n);if(a>b)[a,b]=[b,a];let y=b.getFullYear()-a.getFullYear(),mo=b.getMonth()-a.getMonth(),d=b.getDate()-a.getDate();if(d<0){mo--;d+=new Date(b.getFullYear(),b.getMonth(),0).getDate()}if(mo<0){y--;mo+=12}
+$('#dr0').textContent=m+'日';$('#dr1').textContent=`${Math.floor(m/7)}週${m%7}日 ／ ${y}年${mo}ヶ月${d}日`}
+if($('#ab').value){const r=dd($('#ab').value),n=(+$('#an').value||0)*$('#ad').value,u=$('#au').value;if(u=='d')r.setDate(r.getDate()+n);else if(u=='w')r.setDate(r.getDate()+7*n);else if(u=='m')r.setMonth(r.getMonth()+n);else r.setFullYear(r.getFullYear()+n);$('#ar0').textContent=fd(r);$('#ar1').textContent=jp(r)}
+const bv=$('#bd0').value;if(!bv){$('#ag0').textContent='';$('#ag1').textContent=''}else{const b=dd(bv),t=new Date;let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth();if(t.getDate()<b.getDate())m--;if(m<0){y--;m+=12}
+const nx=new Date(t.getFullYear(),b.getMonth(),b.getDate());if(u0(nx)<u0(t))nx.setFullYear(t.getFullYear()+1);$('#ag0').textContent=`満${y}歳${m}ヶ月`;$('#ag1').textContent=`次の誕生日まで ${(u0(nx)-u0(t))/864e5}日 ／ 生後 ${(u0(t)-u0(b))/864e5}日`}}
+$('#d1').value=$('#ab').value=iso(new Date);{const t=new Date;t.setDate(t.getDate()+30);$('#d2').value=iso(t)}
+$$('[data-app=date] input,[data-app=date] select').forEach(e=>e.oninput=dcalc);dcalc();
+/* ===== お金 ===== */
+const yen=n=>'¥'+Math.round(n).toLocaleString('ja-JP'),v=id=>parseFloat($(id).value)||0;
+function money(){const a=v('#ta'),r=+$('#tr').value/100,inc=Math.floor(a*(1+r)),exc=Math.round(a/(1+r));$('#t1').textContent=yen(inc);$('#t2').textContent=yen(exc);$('#t3').textContent=yen(a-exc);
+$('#k1').textContent=yen(v('#ka')*(1-v('#kp')/100));$('#k2').textContent=yen(v('#ka')*v('#kp')/100);
+const n=Math.max(1,v('#wn')),u=+$('#wu').value,per=Math.ceil(v('#wa')/n/u)*u;$('#w1').textContent=yen(per);$('#w2').textContent=yen(per*n);$('#w3').textContent=yen(per*n-v('#wa'))}
+$$('[data-app=money] input,[data-app=money] select').forEach(e=>e.oninput=money);money();
+/* ===== 進数 ===== */
+const B=[['bd',10],['bb',2],['bo',8],['bh',16]];
+function bp(s,r){s=s.trim().toLowerCase();if(!s)return null;const dg='0123456789abcdef'.slice(0,r);let n=0n;for(const c of s){const i=dg.indexOf(c);if(i<0)return NaN;n=n*BigInt(r)+BigInt(i)}return n}
+B.forEach(([id,r])=>$('#'+id).oninput=()=>{const n=bp($('#'+id).value,r);B.forEach(([i2,r2])=>{if(i2!=id)$('#'+i2).value=typeof n=='bigint'?n.toString(r2).toUpperCase():''});$('#'+id).style.borderColor=Number.isNaN(n)?'#d33':''});
+/* ===== カラー ===== */
+const hx2=h=>{h=h.replace('#','');if(h.length==3)h=[...h].map(c=>c+c).join('');return[0,2,4].map(i=>parseInt(h.substr(i,2),16))};
+function hsl([r,g,b]){r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),d=M-m,l=(M+m)/2,s=d?d/(1-Math.abs(2*l-1)):0;let h=0;if(d){h=M==r?((g-b)/d)%6:M==g?(b-r)/d+2:(r-g)/d+4;h=(h*60+360)%360}return[Math.round(h),Math.round(s*100),Math.round(l*100)]}
+function col(h){const rgb=hx2(h),[H,Sa,L]=hsl(rgb),hex=('#'+rgb.map(x=>pad(x.toString(16))).join('')).toUpperCase();$('#cin').value=hex.toLowerCase();$('#hx').value=hex;
+$('#cc').innerHTML=[['HEX',hex],['RGB',`rgb(${rgb.join(', ')})`],['HSL',`hsl(${H}, ${Sa}%, ${L}%)`]].map(([k,t])=>`<div class="chip cp" data-t="${t}"><b>${k}</b><span style="font-size:19px">${t}</span></div>`).join('');
+$('#tn').innerHTML=[99,95,90,80,70,60,50,40,30,20,10].map(l=>`<div class="sw cp" style="background:hsl(${H} ${Sa}% ${l}%);color:${l>55?'#000a':'#fffa'}" data-t="hsl(${H}, ${Sa}%, ${l}%)">${l}</div>`).join('');
+$$('.cp').forEach(e=>e.onclick=()=>cpy(e.dataset.t))}
+$('#cin').oninput=()=>col($('#cin').value);$('#hx').oninput=()=>{if(/^#?[0-9a-f]{6}$/i.test($('#hx').value))col($('#hx').value)};
+$('#crn').onclick=()=>col('#'+Math.floor(Math.random()*16777216).toString(16).padStart(6,'0'));col('#6a4fd8');
+/* ===== 文字数・変換 ===== */
+function cnt(){const t=$('#ct').value;$('#cs').innerHTML=[['文字数',[...t].length],['空白・改行を除く',[...t.replace(/\s/g,'')].length],['行数',t?t.split('\n').length:0],['単語数',(t.match(/\S+/g)||[]).length],['バイト数(UTF-8)',new Blob([t]).size],['原稿用紙(400字)',(Math.ceil([...t].length/400)||0)+'枚']].map(([k,n])=>`<div class="chip"><b>${k}</b><span>${n}</span></div>`).join('')}
+const CV={h2k:s=>s.replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+96)),k2h:s=>s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)),z2h:s=>s.replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248)).replace(/　/g,' '),h2z:s=>s.replace(/[A-Za-z0-9]/g,c=>String.fromCharCode(c.charCodeAt(0)+65248)),up:s=>s.toUpperCase(),low:s=>s.toLowerCase(),nospace:s=>s.replace(/[ \t　]/g,''),nonl:s=>s.replace(/\n+/g,''),trim:s=>s.split('\n').map(x=>x.trim()).filter(Boolean).join('\n')};
+$$('#cvb button').forEach(b=>b.onclick=()=>{$('#ct').value=CV[b.dataset.f]($('#ct').value);cnt()});
+$('#ct').oninput=cnt;$('#cx').onclick=()=>{$('#ct').value='';cnt()};$('#ccp').onclick=()=>cpy($('#ct').value);cnt();
+/* ===== QRコード ===== */
+let qt='text';
+function qsrc(){if(qt=='text')return $('#qx').value;if(qt=='wifi'){const e=s=>s.replace(/([\\;,:"])/g,'\\$1'),t=$('#wt').value;return 'WIFI:T:'+t+';S:'+e($('#ws').value)+';'+(t=='nopass'?'':'P:'+e($('#wp').value)+';')+';'}
+return `BEGIN:VCARD\nVERSION:3.0\nFN:${$('#vn').value}\nTEL:${$('#vt').value}\nEMAIL:${$('#ve').value}\nEND:VCARD`}
+function qdraw(){const c=$('#qc'),g=c.getContext('2d'),m=$('#qm'),s=qsrc();
+if(!$('#qx').value&&qt=='text'||qt=='wifi'&&!$('#ws').value||qt=='vcard'&&!$('#vn').value){c.width=c.height=2;g.clearRect(0,0,2,2);m.textContent='内容を入力するとQRコードが表示されます';return}
+if(typeof qrcode=='undefined'){m.textContent='QRライブラリを読み込めませんでした。オンラインで開き直してください';return}
+qrcode.stringToBytes=t=>Array.from(new TextEncoder().encode(t));let q;
+try{q=qrcode(0,$('#qe').value);q.addData(s);q.make()}catch(e){m.textContent='データが長すぎます（誤り訂正レベルを下げるか、文字数を減らしてください）';return}
+const n=q.getModuleCount(),px=Math.max(4,Math.floor(720/(n+8))),W=(n+8)*px;c.width=c.height=W;g.fillStyle='#fff';g.fillRect(0,0,W,W);g.fillStyle=$('#qk').value=='b'?'#000':`hsl(${S.h},65%,28%)`;
+for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))g.fillRect((k+4)*px,(r+4)*px,px,px);m.textContent=`${n}×${n}モジュール ／ ${[...s].length}文字`}
+$$('#qtp button').forEach(b=>b.onclick=()=>{qt=b.dataset.t;$$('#qtp button').forEach(x=>x.classList.toggle('on',x==b));['text','wifi','vcard'].forEach(k=>$('#qp-'+k).hidden=k!=qt);qdraw()});
+$$('[data-app=qr] input,[data-app=qr] select,[data-app=qr] textarea').forEach(e=>e.oninput=qdraw);
+$('#qs').onclick=()=>{const c=$('#qc');c.width>2&&c.toBlob(b=>b&&saveFile(b,'qrcode.png'))};addEventListener('load',()=>qdraw());
+/* ===== あそび ===== */
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,items=()=>$('#pl').value.split('\n').map(s=>s.trim()).filter(Boolean);
+$('#dr').onclick=()=>{$('#dice').textContent=Array.from({length:+$('#dn').value},()=>'⚀⚁⚂⚃⚄⚅'[rnd(0,5)]).join(' ')};
+$('#cr').onclick=()=>$('#coin').textContent=Math.random()<.5?'表':'裏';
+$('#rb').onclick=()=>{let a=+$('#rmin').value,b=+$('#rmax').value;if(a>b)[a,b]=[b,a];$('#rn').textContent=rnd(a,b)};
+$('#pk').onclick=()=>{const a=items();if(a.length)$('#po').textContent='👉 '+a[rnd(0,a.length-1)]};
+$('#ps').onclick=()=>{const a=items();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}$('#po').textContent=a.map((x,i)=>`${i+1}.${x}`).join('　')};
+/* ===== 起動 ===== */
+setInterval(()=>{bdg('time',!!(swI||tmI||pI));bdg('write',TD.filter(t=>!t.d).length)},1000);
+sUI();tick();
+{let lv='c:home';try{lv=localStorage.getItem('mt-v')||lv}catch(e){}const id=lv.slice(2);if(lv[0]=='a'&&APPS.some(x=>x[0]==id))openApp(id);else show(CATS.some(x=>x[0]==id)?id:'home')}
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+</script></body></html>
