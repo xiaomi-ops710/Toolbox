@@ -51,12 +51,12 @@ nav.open .it{flex-direction:row;gap:14px;height:56px;border-radius:28px;padding:
 nav.open .it .ic{width:26px;height:26px;background:none!important}nav.open .it.on{background:var(--sc)}nav.open .it:active{background:var(--sf2)}
 .bd{position:absolute;top:-3px;right:6px;min-width:16px;height:16px;border-radius:8px;background:#b3261e;color:#fff;font-size:11px;font-style:normal;font-weight:700;display:grid;place-items:center;padding:0 4px;line-height:1}
 .bd.dot{min-width:8px;width:8px;height:8px;padding:0;top:2px;right:12px}.bd:empty:not(.dot){display:none}nav.open .bd{right:-8px;top:-6px}nav.open .bd.dot{right:-2px;top:-2px}
-#set{display:none;padding:18px 6px 6px;border-top:1px solid var(--ol);margin-top:14px}nav.open #set{display:block;animation:in .4s var(--sp)}
-#set h3{margin:0 0 14px 10px;font-size:22px;font-weight:800;letter-spacing:-.2px}
+#setnav{display:none}nav.open #setnav{display:flex;margin-top:auto;animation:in .4s var(--sp)}#setpg .card{margin-bottom:16px}#setpg .cols>div>.card:last-child{margin-bottom:0}#setpg .sg{margin:0 0 22px}#setpg .sg:last-child{margin-bottom:0}#setpg .sg.r2{margin-bottom:14px}#setpg .row{gap:10px}#setpg .sw8 button.on{box-shadow:0 0 0 3px var(--sf),0 0 0 5px var(--on)}
+
 .sg>b{display:block;font-size:13px;font-weight:700;color:var(--ov);margin-bottom:10px;letter-spacing:.3px}
-#set .sg{margin:0 4px 12px;background:var(--sf2);border-radius:28px;padding:16px 16px 14px}#set .sg>b{margin-left:2px}
+
 .sg.r2{display:flex;justify-content:space-between;align-items:center}.sg.r2>b{margin:0;font-size:16px;color:var(--on);letter-spacing:0}
-#set .sg.r2{padding:12px 16px}
+
 
 .seg{display:flex;gap:2px}.seg button{all:unset;cursor:pointer;flex:1;text-align:center;min-height:44px;padding:0 6px;display:grid;place-items:center;border-radius:6px;background:var(--sf2);font-size:14px;font-weight:700;transition:all .4s var(--sp);color:var(--on)}
 .seg button:first-child{border-radius:22px 6px 6px 22px}.seg button:last-child{border-radius:6px 22px 22px 6px}.seg button:only-child{border-radius:22px}
@@ -83,7 +83,7 @@ html:not(.fl) .swt:after{content:''!important}
 #scrim{display:none;position:fixed;inset:0;background:#0006;z-index:19}
 /* メイン */
 main{flex:1;overflow-y:auto;padding:16px 24px calc(28px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-#list,#bar,section{max-width:1180px;margin:0 auto;animation:in .4s var(--sp)}
+#list,#bar,section,#setpg{max-width:1180px;margin:0 auto;animation:in .4s var(--sp)}
 @keyframes in{from{opacity:0;transform:translateY(14px) scale(.985)}}
 h1{font-size:36px;margin:2px 4px 14px;letter-spacing:-.5px}
 .bar{display:flex;align-items:center;gap:14px;margin-bottom:14px}.bar h1{margin:0}.bar .btn{min-height:48px;padding:0 20px 0 14px}
@@ -156,9 +156,9 @@ html:not(.fl) .ck li:before{content:'☐';font-family:inherit}html:not(.fl) .ck 
 @media(max-width:700px){
 body{flex-direction:column-reverse}
 nav{width:100%;flex-direction:row;align-items:center;padding:4px 6px max(4px,env(safe-area-inset-bottom));gap:2px;overflow:hidden}
-#fab,#set{display:none!important}#cats{flex-direction:row;flex:1;justify-content:space-around;gap:0}#hamb{width:48px}
+#fab{display:none!important}#cats{flex-direction:row;flex:1;justify-content:space-around;gap:0}#hamb{width:48px}
 nav.open{position:fixed;left:0;top:0;bottom:0;width:min(86vw,330px);flex-direction:column;align-items:stretch;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 10px 12px;box-shadow:0 0 40px #0006}
-nav.open #cats{flex-direction:column;flex:none;gap:6px}nav.open #set{display:block!important}nav.open #fab{display:flex!important}nav.open #hamb{align-self:flex-start}
+nav.open #cats{flex-direction:column;flex:none;gap:6px}nav.open #fab{display:flex!important}nav.open #hamb{align-self:flex-start}
 body.op #scrim{display:block}
 .u2,.memo{grid-template-columns:1fr}#cat{flex-direction:row;flex-wrap:wrap}.memo{height:auto}#ed{min-height:320px}main{padding:12px 14px}.tones{grid-template-columns:repeat(6,1fr)}.tiles{grid-template-columns:repeat(2,1fr)}}
 #dc{width:100%;height:calc(100dvh - 340px);min-height:320px;border-radius:28px;background:#fff;touch-action:none;display:block}
@@ -186,27 +186,37 @@ body.op #scrim{display:block}
 .tt{width:100%;border-collapse:separate;border-spacing:6px}.tt th{font-size:15px;color:var(--ov)}.tt th.td0{color:var(--p)}.tt input{width:100%;min-height:58px;font-size:15px;text-align:center;padding:6px;border-radius:16px}.tt input.td0{background:var(--pc)}
 .bars{display:flex;gap:10px;align-items:flex-end;height:150px;margin:8px 0}.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--ov)}.bars i{display:block;width:100%;background:var(--p);border-radius:10px 10px 4px 4px;min-height:3px}
 .it .lb{letter-spacing:.2px}nav.open .it.on{font-weight:800}#hamb{transition:background .2s}
-#set .btn.sm{width:100%;justify-content:flex-start;padding:0 20px 0 16px;background:var(--sf);color:var(--on)}#set .btn.r.sm{background:var(--tc);color:var(--otc)}#set .row{gap:8px}#set .row .btn.sm{flex:1;width:auto;justify-content:center}
 .sg .row{flex-wrap:wrap}
 #set .btn{box-sizing:border-box}.sw8{display:grid!important;grid-template-columns:repeat(4,1fr);justify-items:center;gap:12px}.sw8 button{width:44px;height:44px}
+
+.cam{width:100%;max-height:62dvh;border-radius:28px;background:#000;display:block;object-fit:cover}
+.camw{position:relative}.camw .xh{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #0008,inset 0 0 0 2px #0008;pointer-events:none}
+#mgw{overflow:hidden;border-radius:28px;background:#000;position:relative}#mgw video{width:100%;display:block;transform-origin:center;object-fit:fill}
+#acc,#spc{width:100%;height:240px;border-radius:24px;background:var(--sf2);display:block}
+#gyd{width:min(52vw,220px);aspect-ratio:1;border-radius:50%;border:6px solid var(--pc);margin:0 auto;position:relative;background:var(--sf2)}#gyd i{position:absolute;left:50%;top:8%;width:8px;height:42%;margin-left:-4px;border-radius:4px;background:var(--p);transform-origin:50% 100%}
+#tum{position:relative;height:30px;border-radius:15px;background:var(--sf2);margin:12px 0}#tum:before{content:"";position:absolute;left:50%;top:4px;bottom:4px;width:2px;background:var(--ou)}#tun2{position:absolute;top:3px;bottom:3px;width:8px;margin-left:-4px;left:50%;border-radius:4px;background:var(--p);transition:left .12s,background .2s}
+.pkc{height:110px;border-radius:28px;border:2px solid var(--ol);margin-bottom:12px}.pal{display:flex;flex-wrap:wrap;gap:8px}.pal button{all:unset;cursor:pointer;width:44px;height:44px;border-radius:14px;border:2px solid var(--ol)}
+.rci{background:var(--sf2);border-radius:24px;padding:12px 14px;margin-bottom:10px}.rci audio{width:100%;margin:8px 0}
 </style></head><body>
 <nav id="rail">
 <button id="hamb" aria-label="メニュー"><i class="ms">menu</i></button>
 <button id="fab"><span class="ic"><i class="ms">edit</i></span><span class="lb">新規メモ</span></button>
 <div id="cats"></div>
-<div id="set"><h3>設定</h3>
-<div class="sg"><b>テーマカラー</b><div class="sw8" id="sws"></div><input type="range" id="hue" min="0" max="360"></div>
-<div class="sg"><b>外観</b><div class="seg" id="smode"><button data-v="auto">自動</button><button data-v="light">ライト</button><button data-v="dark">ダーク</button></div></div>
-<div class="sg"><b>文字サイズ</b><div class="seg" id="sfs"><button data-v=".9">小</button><button data-v="1">標準</button><button data-v="1.15">大</button></div></div>
-<div class="sg r2"><b>24時間表示</b><button class="swt" data-k="h24"></button></div>
-<div class="sg r2"><b>動きを減らす</b><button class="swt" data-k="rm"></button></div>
-<div class="sg"><b>データ</b><div class="row"><button class="btn t sm" id="bke"><i class="ms">download</i>バックアップ</button><button class="btn t sm" id="bki"><i class="ms">upload</i>復元</button><input type="file" id="bkf" accept="application/json,.json" hidden></div></div>
-<div class="sg"><button class="btn r sm" id="srs"><i class="ms">restart_alt</i>設定をリセット</button></div>
-</div></nav>
+<button class="it" id="setnav"><span class="ic"><i class="ms">settings</i></span><span class="lb">設定</span></button>
+</nav>
 <div id="scrim"></div>
 <main>
 <div id="bar" class="bar" hidden><button class="btn t" id="back"><i class="ms">arrow_back</i><span id="bk"></span></button><h1 id="at"></h1><button class="btn t" id="fv" aria-label="お気に入り"><i class="ms">star</i></button></div>
 <div id="list"></div>
+<div id="setpg" hidden><h1>設定</h1><div class="cols"><div>
+<div class="card"><h2>外観</h2>
+<div class="sg"><b>テーマカラー</b><div class="sw8" id="sws"></div><input type="range" id="hue" min="0" max="360"></div>
+<div class="sg"><b>ライト / ダーク</b><div class="seg" id="smode"><button data-v="auto">自動</button><button data-v="light">ライト</button><button data-v="dark">ダーク</button></div></div>
+<div class="sg"><b>文字サイズ</b><div class="seg" id="sfs"><button data-v=".9">小</button><button data-v="1">標準</button><button data-v="1.15">大</button></div></div></div></div><div>
+<div class="card"><h2>表示</h2><div class="sg r2"><b>24時間表示</b><button class="swt" data-k="h24"></button></div><div class="sg r2"><b>動きを減らす</b><button class="swt" data-k="rm"></button></div></div>
+<div class="card"><h2>データ</h2><div class="row"><button class="btn t sm" id="bke"><i class="ms">download</i>バックアップを保存</button><button class="btn t sm" id="bki"><i class="ms">upload</i>バックアップから復元</button><input type="file" id="bkf" accept="application/json,.json" hidden></div><div class="sub" style="font-size:14px;margin-top:12px">メモ・ToDo・単語帳などのデータをファイルに保存・復元します。</div></div>
+<div class="card"><h2>リセット</h2><button class="btn r sm" id="srs"><i class="ms">restart_alt</i>設定をリセット</button><div class="sub" id="seti" style="font-size:14px;margin-top:12px"></div></div></div></div></div>
+
 
 <section data-app="clock" hidden><div class="cols"><div class="card"><div class="big" id="time"></div><div class="sub" id="dt"></div></div>
 <div class="card"><h2>世界時計</h2><div class="chips" id="world"></div></div></div></section>
@@ -382,6 +392,34 @@ D</textarea><div class="row" style="margin:12px 0"><button class="btn" id="pk"><
 <select id="fro" style="font-size:30px;width:90px"><option value="+">＋</option><option value="−">−</option><option value="×">×</option><option value="÷">÷</option></select>
 <div style="display:flex;flex-direction:column;gap:6px;width:110px"><input id="frc" type="number" inputmode="numeric" value="5" style="text-align:center"><hr style="width:100%;border:1px solid var(--on)"><input id="frd" type="number" inputmode="numeric" value="6" style="text-align:center"></div></div>
 <div class="chips" id="frr" style="margin-top:18px"></div></div></section>
+
+<section data-app="accel" hidden><div class="card"><canvas id="acc"></canvas><div class="row" style="margin:12px 0"><button class="btn msb" id="acb"><i class="ms">sensors</i>センサー開始</button><button class="btn t" id="acr"><i class="ms">restart_alt</i>ピークをリセット</button></div><div class="chips" id="acs"></div><p class="sub" style="font-size:14px">緑=Z・青=Y・ピンク=X・黒線=合成加速度（G）。静止時は約1Gです。</p></div></section>
+
+<section data-app="gyro" hidden><div class="card"><div id="gyd"><i id="gya"></i></div><div class="row" style="margin:14px 0;justify-content:center"><button class="btn msb" id="gyb"><i class="ms">sensors</i>センサー開始</button><button class="btn t" id="gyr"><i class="ms">restart_alt</i>角度をリセット</button></div><div class="chips" id="gys"></div></div></section>
+
+<section data-app="incl" hidden><div class="cols"><div class="card"><div class="big" id="ino" style="text-align:center">--</div><div class="chips" id="inp" style="margin-top:12px"></div><div class="row" style="margin-top:14px"><select id="inm"><option value="l">縦方向（長辺）の傾き</option><option value="s">横方向（短辺）の傾き</option></select></div><div class="row" style="margin-top:12px"><button class="btn msb" id="inb"><i class="ms">sensors</i>センサー開始</button><button class="btn t" id="inh"><i class="ms">pause</i>固定</button></div><p class="sub" style="font-size:14px">斜面に端を沿わせて置くか、辺を目標へ向けて測ります。</p></div>
+<div class="card"><h2>高さ測定（目標の上端を狙う）</h2><div class="row"><label>目標までの距離（m）<input id="ind" type="number" inputmode="decimal" value="10" style="width:150px"></label><label>目線の高さ（m）<input id="ine" type="number" inputmode="decimal" value="1.5" style="width:150px"></label></div><div class="big" id="inr" style="font-size:44px;margin-top:14px"></div><p class="sub" style="font-size:14px">端末の上端を目標の頂点へ向け、角度を「固定」してから計算します。</p></div></div></section>
+
+<section data-app="gps" hidden><div class="card"><div class="row" style="margin-bottom:14px"><button class="btn" id="gpb"><i class="ms">my_location</i>開始</button><button class="btn t" id="gpr"><i class="ms">restart_alt</i>距離リセット</button><button class="btn t" id="gpc"><i class="ms">content_copy</i>座標をコピー</button><a class="btn t" id="gpm" target="_blank" rel="noopener" hidden><i class="ms">map</i>マップで開く</a></div><div class="chips" id="gps2"></div><div class="sub" id="gpe" style="font-size:15px;margin-top:10px">位置情報の許可が必要です（Wi-Fiのみのモデルは精度が低めです）</div></div></section>
+
+<section data-app="pick" hidden><div class="cols"><div class="card"><div class="camw"><video id="pkv" class="cam" playsinline muted autoplay></video><div class="xh"></div></div><div class="row" style="margin-top:12px"><button class="btn" id="pkb"><i class="ms">videocam</i>開始</button><button class="btn t" id="pkf"><i class="ms">pause</i>固定</button></div></div>
+<div class="card"><div class="pkc" id="pkc"></div><div class="chips" id="pkr"></div><div class="row" style="margin:12px 0"><button class="btn t sm" id="pks"><i class="ms">add</i>パレットに追加</button></div><div class="pal" id="pkh"></div></div></div></section>
+
+<section data-app="mag" hidden><div class="card"><div id="mgw"><video id="mgv" playsinline muted autoplay></video></div><div class="row" style="margin:12px 0"><button class="btn" id="mgb"><i class="ms">videocam</i>開始</button><button class="btn t" id="mgf"><i class="ms">pause</i>固定</button><button class="btn t" id="mgi"><i class="ms">invert_colors</i>白黒反転</button><button class="btn t" id="mgp"><i class="ms">ios_share</i>画像を保存</button></div>
+<div class="row"><label class="fx">拡大 <b id="mgn">2.0</b>倍<input type="range" id="mgz" min="1" max="8" step="0.1" value="2"></label><label class="fx">コントラスト<input type="range" id="mgc" min="50" max="250" value="100"></label></div></div></section>
+
+<section data-app="qrs" hidden><div class="cols"><div class="card"><div class="camw"><video id="qsv" class="cam" playsinline muted autoplay></video></div><div class="row" style="margin-top:12px"><button class="btn" id="qsb"><i class="ms">qr_code_scanner</i>読み取り開始</button></div><div class="sub" id="qsm" style="font-size:14px;margin-top:8px">初回はライブラリを読み込むためオンラインで開いてください（以降はオフラインでも動作）</div></div>
+<div class="card"><h2>読み取り結果</h2><div class="pwv" id="qsr" style="cursor:default">—</div><div class="row"><button class="btn t sm" id="qsc"><i class="ms">content_copy</i>コピー</button><a class="btn sm" id="qso" target="_blank" rel="noopener" hidden><i class="ms">open_in_new</i>開く</a></div><h2 style="margin-top:18px">履歴</h2><div id="qsh"></div></div></div></section>
+
+<section data-app="tuner" hidden><div class="card" style="max-width:680px;text-align:center"><div class="big" id="tun">--</div><div class="sub" id="tuh">マイクを開始してください</div><div id="tum"><i id="tun2"></i></div><div class="sub" id="tuc" style="font-size:18px;min-height:28px"></div>
+<div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="tub"><i class="ms">mic</i>開始</button><button class="btn t" id="tut"><i class="ms">volume_up</i>基準音</button></div><div class="row" style="justify-content:center;margin-top:12px">A4 =<select id="tua"><option>435</option><option>438</option><option>440</option><option selected>442</option><option>444</option></select>Hz</div></div></section>
+
+<section data-app="spec" hidden><div class="card"><canvas id="spc"></canvas><div class="big" id="spp" style="font-size:44px;margin:12px 0">-- Hz</div><div class="row"><button class="btn" id="spb"><i class="ms">mic</i>開始</button></div><p class="sub" style="font-size:14px">20Hz〜20kHzの音の成分を表示し、最も強い周波数を示します。</p></div></section>
+
+<section data-app="rec" hidden><div class="card" style="max-width:720px"><div class="big" id="rct" style="text-align:center">00:00</div><div class="row" style="justify-content:center;margin:14px 0"><button class="btn" id="rcb"><i class="ms">fiber_manual_record</i>録音開始</button></div><div id="rcl"></div><p class="sub" style="font-size:14px">録音はこの画面を閉じるまで保持されます。残したい録音は「保存」でファイルに書き出してください。</p></div></section>
+
+<section data-app="sun" hidden><div class="cols"><div class="card"><h2>場所と日付</h2><div class="row"><label class="fx">緯度<input id="snl" type="number" step="0.0001" value="35.6812" style="width:100%"></label><label class="fx">経度<input id="snn" type="number" step="0.0001" value="139.7671" style="width:100%"></label></div><div class="row" style="margin-top:12px"><input type="date" id="snd" class="fx"><button class="btn t sm" id="sng"><i class="ms">my_location</i>現在地</button></div><div class="sub" id="snt" style="font-size:14px;margin-top:10px">初期値は東京駅。時刻は端末の時刻設定で表示します。</div></div>
+<div class="card"><div class="chips" id="snr"></div><div class="row" style="margin-top:16px;gap:16px"><div class="big" id="snm" style="font-size:64px"></div><div><div class="sub" id="snp" style="margin:0;font-size:22px"></div><div class="sub" id="sna" style="font-size:16px"></div></div></div></div></div></section>
 </main>
 <div id="lo" hidden>タップで消灯</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';s.onload=function(){window.qdraw&&qdraw()};document.head.appendChild(s)"></script>
@@ -402,18 +440,20 @@ const APPS=[['clock','時計','schedule','time','現在時刻と世界時計'],[
 ['hab','習慣トラッカー','local_fire_department','time','毎日のチェックと連続日数'],['wage','給与計算','work_history','calc','時給・深夜割増・日給'],['bmi','BMI・基礎代謝','monitor_weight','calc','体格と消費カロリー'],['stat','統計','bar_chart','calc','平均・中央値・標準偏差'],['era','和暦・干支','history_edu','calc','西暦と和暦を相互変換'],
 ['enc','文字列変換','data_object','write','Base64・URL・JSON・SHA-256'],['mirror','ミラー','face','sense','インカメラを鏡に'],['ruler','定規','square_foot','sense','画面で長さを測る'],['metro','メトロノーム','music_note','fun','テンポ・拍子・タップ'],['counter','カウンター','exposure_plus_1','fun','複数の数取り器'],['rt','反応速度','bolt','fun','反射神経テスト'],
 ['flash','単語帳','style','study','表裏カードで暗記'],['slog','学習記録','timer','study','教科別の勉強時間'],['sheet','暗記シート','visibility_off','study','赤シートで穴埋め暗記'],['drill','計算ドリル','calculate','study','四則演算のスピード練習'],['ptable','周期表','science','study','118元素とクイズ'],
-['prime','素因数分解','pin','study','約数・GCD・LCM'],['eq','方程式','function','study','二次方程式・連立方程式'],['tt','時間割','calendar_view_week','study','週間の時間割表'],['grade','成績計算','grading','study','偏差値・目標点・加重平均'],['geo','図形の公式','pentagon','study','面積・体積・表面積'],['frac','分数計算','percent','study','四則演算と約分']];
+['prime','素因数分解','pin','study','約数・GCD・LCM'],['eq','方程式','function','study','二次方程式・連立方程式'],['tt','時間割','calendar_view_week','study','週間の時間割表'],['grade','成績計算','grading','study','偏差値・目標点・加重平均'],['geo','図形の公式','pentagon','study','面積・体積・表面積'],['frac','分数計算','percent','study','四則演算と約分'],
+['accel','加速度計','speed','sense','XYZ加速度とピークG'],['gyro','ジャイロ','3d_rotation','sense','回転速度と積算角'],['incl','傾斜計・高さ測定','landscape','sense','傾き・勾配・高さを測る'],['gps','現在地・速度','my_location','sense','座標・速度・移動距離'],['pick','カラースポイト','colorize','sense','カメラで色を拾う'],
+['mag','拡大鏡','zoom_in','sense','カメラで拡大・固定'],['qrs','QR読み取り','qr_code_scanner','sense','カメラでQRを読む'],['tuner','チューナー','tune','sense','音名とズレ（セント）'],['spec','スペクトラム','equalizer','sense','音の周波数を可視化'],['rec','ボイスレコーダー','mic','sense','録音・再生・保存'],['sun','日の出・月齢','wb_twilight','sense','日の出入り・月の満ち欠け']];
 const rail=$('#rail'),cn=c=>CATS.find(x=>x[0]==c);
 $('#cats').innerHTML=CATS.map(c=>`<button class="it" data-c="${c[0]}"><span class="ic"><i class="ms">${c[2]}</i><em class="bd"></em></span><span class="lb">${c[1]}</span></button>`).join('');
 const tile=(a,i)=>`<button class="tile" data-a="${a[0]}"><span class="ti c${i%3} s${i%4}"><i class="ms">${a[2]}</i></span><b>${a[1]}</b><small>${a[4]}</small></button>`;
 function setMenu(o){rail.classList.toggle('open',o);document.body.classList.toggle('op',o);$('#hamb i').textContent=o?'menu_open':'menu'}
 $('#hamb').onclick=()=>setMenu(!rail.classList.contains('open'));$('#scrim').onclick=()=>setMenu(false);
 let view={c:'home',a:null};
-function show(c,a){view={c,a};try{localStorage.setItem('mt-v',a?'a:'+a:'c:'+c)}catch(e){}
+function show(c,a){view={c,a};$('#setpg').hidden=true;$('#setnav').classList.remove('on');senseLeave(a);try{localStorage.setItem('mt-v',a?'a:'+a:'c:'+c)}catch(e){}
 if(a!='sound'&&typeof sT!='undefined'&&sT)sStop();if(a!='mirror')mStop();if(a!='metro'&&mrun)mgo();if(a!='rt'){clearTimeout(rtw);rts=0}
 $$('#cats .it').forEach(x=>x.classList.toggle('on',x.dataset.c==c));$$('section[data-app]').forEach(s=>s.hidden=s.dataset.app!=a);
 const L=$('#list');L.hidden=!!a;$('#bar').hidden=!a;
-if(a){$('#at').textContent=APPS.find(x=>x[0]==a)[1];$('#bk').textContent=cn(c)[1];if(a=='graph')draw();if(a=='qr')qdraw();if(a=='draw')dfit();if(a=='cd')rcd();if(a=='hab')rhb();if(a=='ruler')rul();if(a=='slog')slr();if(a=='tt')ttb();favUI()}
+if(a){$('#at').textContent=APPS.find(x=>x[0]==a)[1];$('#bk').textContent=cn(c)[1];if(a=='graph')draw();if(a=='qr')qdraw();if(a=='draw')dfit();if(a=='cd')rcd();if(a=='hab')rhb();if(a=='ruler')rul();if(a=='slog')slr();if(a=='sun')sunr();if(a=='incl')inr();if(a=='tt')ttb();favUI()}
 else{if(c=='home'){L.innerHTML='<h1>ツールボックス</h1><input id="hs" type="search" placeholder="ツールを検索" style="width:100%;margin:0 0 4px"><div id="hb"></div>';rhome();$('#hs').oninput=rhome}
 else{L.innerHTML=`<h1>${cn(c)[1]}</h1><div class="sub" style="margin:-8px 4px 18px">${cn(c)[3]}</div><div class="tiles">${APPS.filter(x=>x[3]==c).map(tile).join('')}</div>`;btile()}}
 $('main').scrollTop=0;rvAll();if(innerWidth<=700)setMenu(false)}
@@ -878,6 +918,128 @@ let n,m;if(op=='+'){n=a*d+c*b;m=b*d}else if(op=='−'){n=a*d-c*b;m=b*d}else if(o
 const g=gcd(n,m)||1;n/=g;m/=g;if(m<0){n=-n;m=-m}
 const w=Math.trunc(n/m),r=Math.abs(n)%m;$('#frr').innerHTML=h('答え（約分済み）',m==1?n:`${n} / ${m}`)+h('帯分数',Math.abs(n)>=m&&m!=1?`${n<0?'-':''}${Math.abs(w)} と ${r} / ${m}`:'—')+h('小数',nf(n/m))}
 $$('[data-app=frac] input,[data-app=frac] select').forEach(e=>e.oninput=frac);frac();
+/* ===== センサー共通 ===== */
+let camFor=null,micFor=null,MO=null,OR=null,CAM=null,MIC=null,pkT=0,qsT=0,micT=0,micRaf=0,gpW=null;
+addEventListener('devicemotion',e=>MO&&MO(e),true);addEventListener('deviceorientation',e=>OR&&OR(e),true);
+async function perm(k){try{const E=k=='o'?DeviceOrientationEvent:DeviceMotionEvent;if(E.requestPermission)return(await E.requestPermission())=='granted'}catch(e){return false}return true}
+const mch=(k,x)=>`<div class="chip"><b>${k}</b><span>${x}</span></div>`,f1=(x,n)=>(+x).toFixed(n==null?1:n);
+function senseLeave(a){MO=null;OR=null;$$('.msb').forEach(b=>bt(b,'sensors','センサー開始'));
+if(camFor!=a)camStop();if(micFor!=a)micStop();if(a!='gps')gpsStop();if(a!='rec'&&recM&&recM.state=='recording')recM.stop()}
+async function camStart(v,face){camStop();camFor=view.a;try{CAM=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:face||'environment'},width:{ideal:1280}},audio:false});v.srcObject=CAM;await v.play();return true}catch(e){camStop();return false}}
+function camStop(){if(CAM){CAM.getTracks().forEach(t=>t.stop());CAM=null}['pkv','mgv','qsv'].forEach(i=>{const v=$('#'+i);if(v)v.srcObject=null});clearInterval(pkT);clearInterval(qsT);[['pkb'],['mgb'],['qsb']].forEach(([i])=>{const b=$('#'+i);if(b)bt(b,i=='qsb'?'qr_code_scanner':'videocam',i=='qsb'?'読み取り開始':'開始')});
+$$('#pkf,#mgf').forEach(b=>bt(b,'pause','固定'))}
+async function micStart(fft){micStop();micFor=view.a;try{const st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}),ctx=new AudioContext;await ctx.resume();const an=ctx.createAnalyser();an.fftSize=fft;an.smoothingTimeConstant=.5;ctx.createMediaStreamSource(st).connect(an);MIC={st,ctx,an};return true}catch(e){return false}}
+function micStop(){clearInterval(micT);cancelAnimationFrame(micRaf);if(MIC){MIC.st.getTracks().forEach(t=>t.stop());MIC.ctx.close();MIC=null}tuToneStop();[['tub'],['spb']].forEach(([i])=>{const b=$('#'+i);if(b)bt(b,'mic','開始')})}
+/* ===== 加速度計 ===== */
+const AN=200;let acB=[],acPk=0,acGot=0;const acx=$('#acc').getContext('2d');
+function acDraw(){const c=$('#acc'),d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;if(!w)return;if(c.width!=(w*d|0)){c.width=w*d;c.height=h*d}acx.setTransform(d,0,0,d,0,0);acx.clearRect(0,0,w,h);acx.lineWidth=1;acx.font='11px sans-serif';
+[-2,-1,0,1,2].forEach(g=>{const y=h/2-g*h/6;acx.strokeStyle=css('--ol');acx.beginPath();acx.moveTo(0,y);acx.lineTo(w,y);acx.stroke();acx.fillStyle=css('--ov');acx.fillText(g+'G',4,y-2)});
+[[0,'#d0388a'],[1,'#2e7fd8'],[2,'#2e9e5b'],[3,css('--on')]].forEach(([k,col])=>{acx.strokeStyle=col;acx.lineWidth=k==3?2.5:1.5;acx.beginPath();acB.forEach((s,i)=>{const x=i/(AN-1)*w,y=h/2-Math.max(-3,Math.min(3,s[k]))*h/6;i?acx.lineTo(x,y):acx.moveTo(x,y)});acx.stroke()})}
+$('#acb').onclick=async()=>{if(MO){MO=null;bt($('#acb'),'sensors','センサー開始');return}if(!await perm('m')){$('#acs').innerHTML=mch('状態','センサー使用不可');return}acGot=0;
+MO=e=>{const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;acGot=1;const g=Math.hypot(a.x,a.y,a.z)/9.80665;acPk=Math.max(acPk,g);acB.push([a.x/9.80665,a.y/9.80665,a.z/9.80665,g]);if(acB.length>AN)acB.shift();
+const l=e.acceleration;$('#acs').innerHTML=mch('X',f1(a.x,2)+' m/s²')+mch('Y',f1(a.y,2)+' m/s²')+mch('Z',f1(a.z,2)+' m/s²')+mch('合成',f1(g,2)+' G')+mch('ピーク',f1(acPk,2)+' G')+(l&&l.x!=null?mch('重力を除く',f1(Math.hypot(l.x,l.y,l.z),2)+' m/s²'):'');acDraw()};
+bt($('#acb'),'stop','停止');setTimeout(()=>{if(MO&&!acGot)$('#acs').innerHTML=mch('状態','データがありません（iPadで開いてください）')},1800)};
+$('#acr').onclick=()=>{acPk=0;acB=[];acDraw()};
+/* ===== ジャイロ ===== */
+let gyA=[0,0,0],gyT=0;
+function gyr(){const c=(k,x)=>mch(k,x);$('#gya').style.transform=`rotate(${gyA[2]}deg)`}
+$('#gyb').onclick=async()=>{if(MO){MO=null;bt($('#gyb'),'sensors','センサー開始');return}if(!await perm('m')){$('#gys').innerHTML=mch('状態','センサー使用不可');return}gyT=0;
+MO=e=>{const r=e.rotationRate;if(!r)return;const t=performance.now(),dt=gyT?(t-gyT)/1000:0;gyT=t;const v=[r.beta||0,r.gamma||0,r.alpha||0];gyA=gyA.map((x,i)=>x+v[i]*dt);gyr();
+$('#gys').innerHTML=mch('X軸の回転',f1(v[0])+' °/s')+mch('Y軸の回転',f1(v[1])+' °/s')+mch('Z軸の回転',f1(v[2])+' °/s')+mch('Z軸 回転数',f1(Math.abs(v[2])/6)+' rpm')+mch('積算角 X/Y/Z',gyA.map(x=>f1(x,0)+'°').join(' / '))};bt($('#gyb'),'stop','停止')};
+$('#gyr').onclick=()=>{gyA=[0,0,0];gyr()};
+/* ===== 傾斜計・高さ ===== */
+let inAng=0,inHold=false;
+function inr(){const a=inAng,t=Math.tan(a*Math.PI/180);$('#ino').textContent=f1(a)+'°';$('#inp').innerHTML=mch('勾配',Math.abs(a)<89.5?f1(t*100)+' %':'—')+mch('水平からの傾き',f1(Math.abs(a))+'°')+mch('状態',inHold?'固定中':'測定中');
+const d=v('#ind'),e=v('#ine');$('#inr').textContent=Math.abs(a)<89.5?'高さ 約 '+f1(e+d*t,2)+' m':'—'}
+$('#inb').onclick=async()=>{if(OR){OR=null;bt($('#inb'),'sensors','センサー開始');return}if(!await perm('o')){$('#ino').textContent='センサー使用不可';return}
+OR=e=>{if(inHold)return;const m=$('#inm').value=='l';let a=m?e.beta:e.gamma;if(a==null)return;if(a>90)a=180-a;if(a<-90)a=-180-a;inAng=a;inr()};bt($('#inb'),'stop','停止')};
+$('#inh').onclick=()=>{inHold=!inHold;$('#inh').classList.toggle('on',inHold);inr()};$('#ind').oninput=$('#ine').oninput=inr;inr();
+/* ===== 現在地・速度 ===== */
+let gpP=null,gpD=0,gpT0=0,gpLast=null;
+const hav=(a,b)=>{const R=6371000,r=Math.PI/180,dl=(b.latitude-a.latitude)*r,dn=(b.longitude-a.longitude)*r,x=Math.sin(dl/2)**2+Math.cos(a.latitude*r)*Math.cos(b.latitude*r)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(x))};
+function gpsStop(){if(gpW!=null){navigator.geolocation.clearWatch(gpW);gpW=null}const b=$('#gpb');b&&bt(b,'my_location','開始')}
+function gpsr(){const c=gpLast;if(!c)return;const sp=c.speed!=null&&!isNaN(c.speed)?f1(c.speed*3.6)+' km/h':'—',hd=c.heading!=null&&!isNaN(c.heading)?`${DIR[Math.round(c.heading/45)%8]} ${Math.round(c.heading)}°`:'—',el=Math.round((Date.now()-gpT0)/1000);
+$('#gps2').innerHTML=mch('緯度',c.latitude.toFixed(6))+mch('経度',c.longitude.toFixed(6))+mch('精度','± '+Math.round(c.accuracy)+' m')+mch('高度',c.altitude!=null?Math.round(c.altitude)+' m':'—')+mch('速度',sp)+mch('進行方向',hd)+mch('移動距離',gpD>=1000?f1(gpD/1000,2)+' km':Math.round(gpD)+' m')+mch('経過時間',`${pad(el/60|0)}:${pad(el%60)}`);
+const m=$('#gpm');m.hidden=false;m.href=`https://maps.apple.com/?ll=${c.latitude},${c.longitude}&q=${encodeURIComponent('現在地')}`}
+$('#gpb').onclick=()=>{if(gpW!=null){gpsStop();return}if(!navigator.geolocation){$('#gpe').textContent='位置情報を利用できません';return}gpT0=Date.now();gpP=null;
+gpW=navigator.geolocation.watchPosition(pos=>{const c=pos.coords;gpLast=c;if(gpP){const d=hav(gpP,c);if(d>Math.max(3,c.accuracy/2)&&c.accuracy<=100){gpD+=d;gpP=c}}else gpP=c;$('#gpe').textContent='';gpsr()},er=>{$('#gpe').textContent=er.code==1?'位置情報が許可されていません（設定で許可してください）':er.code==3?'取得がタイムアウトしました':'位置を取得できません'},{enableHighAccuracy:true,maximumAge:1000,timeout:20000});bt($('#gpb'),'stop','停止')};
+$('#gpr').onclick=()=>{gpD=0;gpP=gpLast;gpT0=Date.now();gpsr()};$('#gpc').onclick=()=>{if(gpLast)cpy(gpLast.latitude.toFixed(6)+','+gpLast.longitude.toFixed(6))};
+/* ===== カラースポイト ===== */
+let pkL=[],pkCur='#000000';try{pkL=JSON.parse(localStorage.getItem('mt-pal')||'[]')}catch(e){}
+const pkc=document.createElement('canvas');pkc.width=pkc.height=4;const pkx=pkc.getContext('2d',{willReadFrequently:true});
+function pkShow(h){pkCur=h;const rgb=hx2(h),[H,Sa,L]=hsl(rgb);$('#pkc').style.background=h;$('#pkr').innerHTML=[['HEX',h],['RGB',`rgb(${rgb.join(', ')})`],['HSL',`hsl(${H}, ${Sa}%, ${L}%)`]].map(([k,t])=>`<div class="chip cp" data-t="${t}"><b>${k}</b><span style="font-size:19px">${t}</span></div>`).join('');$$('#pkr .cp').forEach(e=>e.onclick=()=>cpy(e.dataset.t))}
+function pkPal(){$('#pkh').innerHTML=pkL.map(c=>`<button style="background:${c}" data-c="${c}"></button>`).join('');$$('#pkh button').forEach(b=>b.onclick=()=>{pkShow(b.dataset.c);cpy(b.dataset.c)})}
+function pkSample(){const v=$('#pkv');if(!v.videoWidth||v.paused)return;const w=v.videoWidth,h=v.videoHeight,s=Math.min(w,h)/14;pkx.drawImage(v,w/2-s/2,h/2-s/2,s,s,0,0,4,4);const d=pkx.getImageData(0,0,4,4).data;let r=0,g=0,b=0;for(let i=0;i<64;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2]}pkShow('#'+[r,g,b].map(x=>pad(Math.round(x/16).toString(16))).join('').toUpperCase())}
+$('#pkb').onclick=async()=>{if(CAM){camStop();return}if(await camStart($('#pkv'))){bt($('#pkb'),'stop','停止');pkT=setInterval(pkSample,120)}else $('#pkr').innerHTML=mch('状態','カメラを使用できません')};
+$('#pkf').onclick=()=>{const v=$('#pkv');if(!CAM)return;if(v.paused){v.play();bt($('#pkf'),'pause','固定')}else{v.pause();bt($('#pkf'),'play_arrow','再開')}};
+$('#pks').onclick=()=>{if(!pkL.includes(pkCur)){pkL.unshift(pkCur);pkL=pkL.slice(0,16);try{localStorage.setItem('mt-pal',JSON.stringify(pkL))}catch(e){}pkPal()}};pkShow('#6A4FD8');pkPal();
+/* ===== 拡大鏡 ===== */
+let mgInv=false;
+function mgfx(){const v=$('#mgv');v.style.transform=`scale(${$('#mgz').value})`;v.style.filter=`contrast(${$('#mgc').value}%)${mgInv?' invert(1)':''}`;$('#mgn').textContent=(+$('#mgz').value).toFixed(1)}
+$('#mgz').oninput=$('#mgc').oninput=mgfx;$('#mgi').onclick=()=>{mgInv=!mgInv;$('#mgi').classList.toggle('on',mgInv);mgfx()};
+$('#mgb').onclick=async()=>{if(CAM){camStop();return}if(await camStart($('#mgv'))){const v=$('#mgv');v.onloadedmetadata=()=>$('#mgw').style.aspectRatio=v.videoWidth+'/'+v.videoHeight;if(v.videoWidth)$('#mgw').style.aspectRatio=v.videoWidth+'/'+v.videoHeight;bt($('#mgb'),'stop','停止')}};
+$('#mgf').onclick=()=>{const v=$('#mgv');if(!CAM)return;if(v.paused){v.play();bt($('#mgf'),'pause','固定')}else{v.pause();bt($('#mgf'),'play_arrow','再開')}};
+$('#mgp').onclick=()=>{const v=$('#mgv');if(!v.videoWidth)return;const z=+$('#mgz').value,w=v.videoWidth,h=v.videoHeight,c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.drawImage(v,w/2-w/z/2,h/2-h/z/2,w/z,h/z,0,0,w,h);c.toBlob(b=>b&&saveFile(b,'magnifier.jpg'),'image/jpeg',.92)};mgfx();
+/* ===== QR読み取り ===== */
+let qsH=[];try{qsH=JSON.parse(localStorage.getItem('mt-qh')||'[]')}catch(e){}
+const qsc=document.createElement('canvas'),qsx=qsc.getContext('2d',{willReadFrequently:true});let qsLib=null;
+function qsLoad(){if(typeof jsQR!='undefined')return Promise.resolve();if(qsLib)return qsLib;const u=['https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js','https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js'];
+qsLib=u.reduce((p,url)=>p.catch(()=>new Promise((ok,ng)=>{const e=document.createElement('script');e.src=url;e.onload=()=>typeof jsQR!='undefined'?ok():ng();e.onerror=ng;document.head.appendChild(e)})),Promise.reject()).catch(e=>{qsLib=null;throw e});return qsLib}
+function qsDecode(src,w,h){const sc=Math.min(1,640/Math.max(w,h));qsc.width=Math.round(w*sc);qsc.height=Math.round(h*sc);qsx.drawImage(src,0,0,qsc.width,qsc.height);const d=qsx.getImageData(0,0,qsc.width,qsc.height),r=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});return r?r.data:null}
+function qsHist(){$('#qsh').innerHTML=qsH.map((t,i)=>`<div class="hi" data-i="${i}" style="align-items:flex-start"><b style="font-size:16px;word-break:break-all">${esc(t)}</b></div>`).join('')||'<div class="sub" style="font-size:15px">まだありません</div>';$$('#qsh .hi').forEach(d=>d.onclick=()=>qsShow(qsH[+d.dataset.i],false))}
+function qsShow(t,add){$('#qsr').textContent=t;const o=$('#qso'),u=/^https?:\/\//i.test(t);o.hidden=!u;if(u)o.href=t;if(add){qsH=[t,...qsH.filter(x=>x!=t)].slice(0,10);try{localStorage.setItem('mt-qh',JSON.stringify(qsH))}catch(e){}qsHist()}}
+$('#qsc').onclick=()=>{const t=$('#qsr').textContent;t&&t!='—'&&cpy(t)};
+$('#qsb').onclick=async()=>{if(CAM){camStop();return}$('#qsm').textContent='ライブラリを読み込み中…';try{await qsLoad()}catch(e){$('#qsm').textContent='QRライブラリを読み込めませんでした。オンラインで開き直してください';return}
+if(!await camStart($('#qsv'))){$('#qsm').textContent='カメラを使用できません（許可を確認してください）';return}bt($('#qsb'),'stop','停止');$('#qsm').textContent='QRコードを枠内に写してください';
+let last='';qsT=setInterval(()=>{const v=$('#qsv');if(!v.videoWidth||v.paused)return;const t=qsDecode(v,v.videoWidth,v.videoHeight);if(t&&t!=last){last=t;qsShow(t,true);$('#qsm').textContent='読み取りました'}},220)};qsHist();
+/* ===== チューナー ===== */
+function pitchAC(b,sr){const n=Math.min(b.length,2048);let e=0;for(let i=0;i<n;i++)e+=b[i]*b[i];if(Math.sqrt(e/n)<.008)return-1;
+const maxL=Math.min(Math.floor(sr/60),n>>1),minL=Math.max(2,Math.floor(sr/1500)),ns=new Float32Array(maxL+2);
+for(let l=1;l<=maxL;l++){let a=0,m=0;for(let i=0;i<n-l;i++){a+=b[i]*b[i+l];m+=b[i]*b[i]+b[i+l]*b[i+l]}ns[l]=m?2*a/m:0}
+const pk=[];let l=1;while(l<maxL&&ns[l]>0)l++;while(l<maxL){while(l<maxL&&ns[l]<=0)l++;let bi=0,bv=-1;while(l<maxL&&ns[l]>0){if(ns[l]>bv){bv=ns[l];bi=l}l++}if(bv>0&&bi>=minL&&ns[bi]>=ns[bi-1]&&ns[bi]>=ns[bi+1])pk.push([bi,bv])}
+if(!pk.length)return-1;const mx=Math.max(...pk.map(x=>x[1]));if(mx<.6)return-1;const[L,]=pk.find(x=>x[1]>=.9*mx),a=ns[L-1],c=ns[L],d=ns[L+1],den=a-2*c+d,sh=den?(a-d)/(2*den):0;return sr/(L+sh)}
+const NN=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];let tuTone=null,tuS=0;
+function tuToneStop(){if(tuTone){try{tuTone.stop()}catch(e){}tuTone=null}const b=$('#tut');b&&b.classList.remove('on')}
+$('#tub').onclick=async()=>{if(MIC){micStop();return}if(!await micStart(4096)){$('#tuh').textContent='マイクを使用できません（許可を確認してください）';return}bt($('#tub'),'stop','停止');$('#tuh').textContent='音を鳴らしてください';
+micT=setInterval(()=>{if(!MIC)return;const b=new Float32Array(MIC.an.fftSize);MIC.an.getFloatTimeDomainData(b);const f=pitchAC(b,MIC.ctx.sampleRate);if(f<0){$('#tun').style.opacity=.35;return}
+const ref=+$('#tua').value,m=69+12*Math.log2(f/ref),r=Math.round(m),ce=(m-r)*100;tuS=tuS?tuS*.6+ce*.4:ce;$('#tun').style.opacity=1;$('#tun').textContent=NN[((r%12)+12)%12]+(Math.floor(r/12)-1);$('#tuh').textContent=f1(f,1)+' Hz';
+$('#tun2').style.left=(50+Math.max(-50,Math.min(50,tuS)))+'%';const ok=Math.abs(tuS)<5;$('#tun2').style.background=ok?'#2e9e5b':'var(--p)';$('#tuc').textContent=ok?'ぴったり ✓':(tuS>0?'高い ':'低い ')+f1(Math.abs(tuS),0)+' セント'},60)};
+$('#tut').onclick=()=>{if(tuTone){tuToneStop();return}unlock();if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=+$('#tua').value;g.gain.value=.2;o.connect(g);g.connect(ac.destination);o.start();tuTone=o;$('#tut').classList.add('on')};
+/* ===== スペクトラム ===== */
+const spx=$('#spc').getContext('2d');
+function spDraw(){if(!MIC||view.a!='spec')return;const c=$('#spc'),d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;if(c.width!=(w*d|0)){c.width=w*d;c.height=h*d}spx.setTransform(d,0,0,d,0,0);spx.clearRect(0,0,w,h);
+const an=MIC.an,N=an.frequencyBinCount,u=new Uint8Array(N);an.getByteFrequencyData(u);const sr=MIC.ctx.sampleRate,nyq=sr/2,bw=3;let pkv=0,pki=0;
+for(let i=2;i<N;i++)if(u[i]>pkv){pkv=u[i];pki=i}
+spx.fillStyle=css('--p');for(let x=0;x<w;x+=bw+1){const f0=20*Math.pow(1000,x/w),f1_=20*Math.pow(1000,(x+bw)/w),i0=Math.floor(f0/nyq*N),i1=Math.max(i0+1,Math.ceil(f1_/nyq*N));let m=0;for(let i=i0;i<i1&&i<N;i++)m=Math.max(m,u[i]);const bh=m/255*h;spx.fillRect(x,h-bh,bw,bh)}
+spx.fillStyle=css('--ov');spx.font='11px sans-serif';[100,1000,10000].forEach(f=>{const x=Math.log(f/20)/Math.log(1000)*w;spx.fillText(f>=1000?f/1000+'k':f,x+2,h-4)});
+$('#spp').textContent=pkv>60?`${Math.round(pki*nyq/N)} Hz`:'-- Hz';micRaf=requestAnimationFrame(spDraw)}
+$('#spb').onclick=async()=>{if(MIC){micStop();return}if(!await micStart(8192)){$('#spp').textContent='マイクを使用できません';return}bt($('#spb'),'stop','停止');spDraw()};
+/* ===== ボイスレコーダー ===== */
+let recM=null,recC=[],recT0=0,recI=0,RC=[];
+function rrl(){$('#rcl').innerHTML=RC.map(r=>`<div class="rci" data-i="${r.id}"><b>${esc(r.name)}</b> <span class="sub" style="font-size:14px">${r.dur}</span><audio controls src="${r.url}"></audio><div class="row"><button class="btn t sm rsv"><i class="ms">ios_share</i>保存</button><button class="btn r sm rdl"><i class="ms">delete</i>削除</button></div></div>`).join('');
+$$('#rcl .rsv').forEach(b=>b.onclick=()=>{const r=RC.find(x=>x.id==b.closest('.rci').dataset.i);saveFile(r.blob,'recording-'+r.id+'.'+(/mp4|aac/.test(r.blob.type)?'m4a':/ogg/.test(r.blob.type)?'ogg':'webm'))});
+$$('#rcl .rdl').forEach(b=>b.onclick=()=>{const r=RC.find(x=>x.id==b.closest('.rci').dataset.i);URL.revokeObjectURL(r.url);RC=RC.filter(x=>x!=r);rrl()})}
+$('#rcb').onclick=async()=>{if(recM&&recM.state=='recording'){recM.stop();return}let st;try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){$('#rct').textContent='マイク不可';return}
+const mt=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';recC=[];recM=new MediaRecorder(st,mt?{mimeType:mt}:{});recM.ondataavailable=e=>e.data.size&&recC.push(e.data);
+recM.onstop=()=>{clearInterval(recI);st.getTracks().forEach(t=>t.stop());const sec=Math.round((Date.now()-recT0)/1000),blob=new Blob(recC,{type:recM.mimeType||mt||'audio/webm'});RC.unshift({id:Date.now(),name:'録音 '+new Date().toLocaleTimeString('ja-JP',{hour12:!S.h24}),blob,url:URL.createObjectURL(blob),dur:`${pad(sec/60|0)}:${pad(sec%60)}`});rrl();bt($('#rcb'),'fiber_manual_record','録音開始');$('#rcb').classList.remove('r')};
+recM.start();recT0=Date.now();recI=setInterval(()=>{const s=Math.round((Date.now()-recT0)/1000);$('#rct').textContent=`${pad(s/60|0)}:${pad(s%60)}`},250);bt($('#rcb'),'stop','録音停止')};
+/* ===== 日の出・月齢 ===== */
+function sunCalc(lat,lon,date){const rad=Math.PI/180,noon=new Date(date.getFullYear(),date.getMonth(),date.getDate(),12),jd=noon.getTime()/864e5+2440587.5,n0=Math.ceil(jd-2451545+0.0008),toD=j=>new Date((j-2440587.5)*864e5);
+const at=(n,alt)=>{const Js=n-lon/360,M=(357.5291+0.98560028*Js)%360,Mr=M*rad,C=1.9148*Math.sin(Mr)+0.02*Math.sin(2*Mr)+0.0003*Math.sin(3*Mr),Lm=(M+C+180+102.9372)%360,Lr=Lm*rad,Jt=2451545+Js+0.0053*Math.sin(Mr)-0.0069*Math.sin(2*Lr),dec=Math.asin(Math.sin(Lr)*Math.sin(23.4397*rad)),cw=(Math.sin(alt*rad)-Math.sin(lat*rad)*Math.sin(dec))/(Math.cos(lat*rad)*Math.cos(dec));
+if(cw<-1||cw>1)return{Jt,pol:cw<-1?'白夜（沈まない）':'極夜（昇らない）'};const w=Math.acos(cw)/rad;return{Jt,rise:Jt-w/360,set:Jt+w/360}};
+let k=[0,-1,1].find(k=>toD(at(n0+k,-.833).Jt).getDate()==date.getDate());if(k==null)k=0;const a=at(n0+k,-.833),t=at(n0+k,-6);
+const dd2=jd-2451545,sg=(357.529+0.98560028*dd2)*rad,Mm=(134.963+13.064993*dd2)*rad,lm=218.316+13.176396*dd2+6.289*Math.sin(Mm),ls=280.459+0.98564736*dd2+1.915*Math.sin(sg)+0.02*Math.sin(2*sg),el=(((lm-ls)%360)+360)%360,age=el/360*29.530588853;return{transit:toD(a.Jt),rise:a.rise&&toD(a.rise),set:a.set&&toD(a.set),pol:a.pol,cs:t.rise&&toD(t.rise),ce:t.set&&toD(t.set),age}}
+function sunr(){const lat=v('#snl'),lon=v('#snn'),dv=$('#snd').value;if(!dv)return;const[y,m,d]=dv.split('-').map(Number),r=sunCalc(lat,lon,new Date(y,m-1,d)),tf=x=>x?x.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:!S.h24}):'—';
+let dl='—';if(r.rise&&r.set){const mm=Math.round((r.set-r.rise)/6e4);dl=`${mm/60|0}時間${mm%60}分`}
+$('#snr').innerHTML=r.pol?mch('太陽',r.pol)+mch('南中',tf(r.transit)):mch('日の出',tf(r.rise))+mch('日の入り',tf(r.set))+mch('南中',tf(r.transit))+mch('昼の長さ',dl)+mch('市民薄明 開始',tf(r.cs))+mch('市民薄明 終了',tf(r.ce));
+const ph=Math.round(r.age/29.530588853*8)%8;$('#snm').textContent='🌑🌒🌓🌔🌕🌖🌗🌘'[ph];$('#snp').textContent=['新月','三日月','上弦の月','満ちゆく月（十日夜ごろ）','満月','欠けゆく月（十八夜ごろ）','下弦の月','有明の月（二十六夜ごろ）'][ph];$('#sna').textContent=`月齢 ${f1(r.age)} ／ 輝面比 約${Math.round((1-Math.cos(2*Math.PI*r.age/29.530588853))/2*100)}%`;
+try{localStorage.setItem('mt-loc',JSON.stringify([lat,lon]))}catch(e){}}
+try{const L=JSON.parse(localStorage.getItem('mt-loc')||'null');if(L){$('#snl').value=L[0];$('#snn').value=L[1]}}catch(e){}
+$('#snd').value=dk(new Date);$$('[data-app=sun] input').forEach(e=>e.oninput=sunr);
+$('#sng').onclick=()=>{if(!navigator.geolocation)return;$('#snt').textContent='現在地を取得中…';navigator.geolocation.getCurrentPosition(p=>{$('#snl').value=p.coords.latitude.toFixed(4);$('#snn').value=p.coords.longitude.toFixed(4);$('#snt').textContent='現在地を使用中。時刻は端末の時刻設定で表示します。';sunr()},()=>{$('#snt').textContent='現在地を取得できませんでした'},{timeout:15000})};sunr();
+/* ===== 設定画面 ===== */
+function showSettings(){show('home');$('#list').hidden=true;$$('#cats .it').forEach(x=>x.classList.remove('on'));$('#setpg').hidden=false;$('#setnav').classList.add('on');$('#seti').textContent='ツール '+APPS.length+' 個';rvAll()}
+$('#setnav').onclick=showSettings;
 /* ===== スライダー表示 ===== */
 function rv(e){const mn=+e.min||0,mx=e.max===''?100:+e.max;e.style.setProperty('--v',((e.value-mn)/(mx-mn)||0)*100)}
 function rvAll(){$$('input[type=range]').forEach(rv)}
